@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[PetSitter]
+(
+	[ID] INT IDENTITY NOT NULL,
+	[LastName] NVARCHAR (60) NOT NULL,
+	[FirstName] NVARCHAR (60) NOT NULL,
+	[BirthDate] datetime2 NOT NULL,
+	[Email] NVARCHAR (60) NOT NULL,
+	[Passwd] NVARCHAR(15) NOT NULL,
+	[Score] INT DEFAULT 0,
+	[PetPreference] NVARCHAR(60),
+	CHECK ([Score] BETWEEN 0 AND 5),
+	CHECK (LEN([Passwd]) BETWEEN 8 AND 15),
+	CONSTRAINT [PK_PetSitter] PRIMARY KEY ([ID])
+)

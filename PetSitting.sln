@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetSitting", "PetSitting\PetSitting.csproj", "{58EBF2C7-9A55-4855-BBF4-9D55C86A158F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLLPetSitting", "PetSittingModels\BLLPetSitting.csproj", "{B63AD38C-7659-44AB-B346-569764B756B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{9FE191C9-FEFA-4639-827C-CFBE0CAF449B}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DBPetSitting", "DBPetSitting\DBPetSitting.sqlproj", "{198F85FF-3AEC-4C10-9120-3E3B39AE725F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DALPetSitting", "DALPetSitting\DALPetSitting.csproj", "{059EA65F-E8B6-4062-895D-586E4CBC7C50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIPetSitting", "APIPetSitting\APIPetSitting.csproj", "{5C264056-C8CA-4E82-879E-4F0816483F68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58EBF2C7-9A55-4855-BBF4-9D55C86A158F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58EBF2C7-9A55-4855-BBF4-9D55C86A158F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58EBF2C7-9A55-4855-BBF4-9D55C86A158F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58EBF2C7-9A55-4855-BBF4-9D55C86A158F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B63AD38C-7659-44AB-B346-569764B756B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B63AD38C-7659-44AB-B346-569764B756B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B63AD38C-7659-44AB-B346-569764B756B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B63AD38C-7659-44AB-B346-569764B756B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198F85FF-3AEC-4C10-9120-3E3B39AE725F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{059EA65F-E8B6-4062-895D-586E4CBC7C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{059EA65F-E8B6-4062-895D-586E4CBC7C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{059EA65F-E8B6-4062-895D-586E4CBC7C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{059EA65F-E8B6-4062-895D-586E4CBC7C50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C264056-C8CA-4E82-879E-4F0816483F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C264056-C8CA-4E82-879E-4F0816483F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C264056-C8CA-4E82-879E-4F0816483F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C264056-C8CA-4E82-879E-4F0816483F68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC162260-DE36-452F-8603-EBCC6C04E31E}
+	EndGlobalSection
+EndGlobal
