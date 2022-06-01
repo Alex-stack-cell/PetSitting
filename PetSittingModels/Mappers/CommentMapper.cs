@@ -27,6 +27,7 @@ namespace BLLPetSitting.Mappers
             Comment.IdPrestation = Entity.ID_Prestation;
             Comment.IdOwner = Entity.ID_Owner;
             Comment.IdPetSitter = Entity.ID_PetSitter;
+            Comment.IsOwner = Entity.IsOwner;
 
             return Comment;
         }

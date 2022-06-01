@@ -125,7 +125,8 @@ namespace DALPetSitting.Services
                                     Title = (string)reader["Title"],
                                     Description = (string)reader["Description"],
                                     CreatedAt = (DateTime)reader["CreatedAt"],
-                                    Score = (int)reader["Score"]
+                                    Score = (int)reader["Score"],
+                                    IsOwner = (bool)reader["isOwner"]
                                 });
                             }
                             return list;

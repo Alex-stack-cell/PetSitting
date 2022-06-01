@@ -16,5 +16,6 @@ namespace APIPetSitting.Models
         public DateTime CreatedAt { get; set; }
         [Required]
         public int Score { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

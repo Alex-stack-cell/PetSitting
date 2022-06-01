@@ -24,7 +24,8 @@ namespace APIPetSitting.Mappers
                 Title = Bll.Title,
                 Description = Bll.Description,
                 CreatedAt = Bll.CreatedAt,
-                Score = Bll.Score
+                Score = Bll.Score,
+                IsOwner = Bll.IsOwner
             };
         }
         /// <summary>
@@ -38,6 +39,7 @@ namespace APIPetSitting.Mappers
             comment.IdPrestation = Api.ID_Prestation;
             comment.IdOwner = Api.ID_Owner;
             comment.IdPetSitter = Api.ID_PetSitter;
+            comment.IsOwner = Api.IsOwner;
 
             return comment;
         }

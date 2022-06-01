@@ -25,6 +25,7 @@ namespace BLLPetSitting.Concretes
         public string Description { get { return this._description; } set { this._description = value; } }
         public DateTime CreatedAt { get { return this._createdAt; } set { this._createdAt = value; } }
         public int Score { get { return this._score; } set { this._score = value; } }
+        public bool IsOwner { get; set; }
 
         public Comment(int? id, string title, string description, int score, DateTime createdAt)
         {

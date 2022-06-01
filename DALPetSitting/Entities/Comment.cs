@@ -19,5 +19,6 @@ namespace DALPetSitting.Entities
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Score { get; set; }
+        public bool IsOwner { get; set; }
     }
 }
