@@ -33,6 +33,11 @@ namespace APIPetSitting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+            });
+            
             services.AddTransient(typeof(OwnerBllService));
             services.AddTransient(typeof(OwnerDalService));
             services.AddTransient(typeof(PetSitterBllService));
@@ -70,6 +75,8 @@ namespace APIPetSitting
             }
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
