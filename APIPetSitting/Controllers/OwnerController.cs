@@ -5,13 +5,14 @@ using APIPetSitting.Models;
 using System.Linq;
 using APIPetSitting.Mappers;
 using System;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIPetSitting.Controllers
-{   
+{
     /// <summary>
     /// Classe controller pour l'api
     /// </summary>
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OwnerController : ControllerBase
@@ -24,6 +25,7 @@ namespace APIPetSitting.Controllers
         }
 
         // GET: api/<OwnerController>
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get()
         {

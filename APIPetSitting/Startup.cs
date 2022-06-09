@@ -21,6 +21,8 @@ using CommentDalService = DALPetSitting.Services.CommentService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using APIPetSitting.Models;
+using System;
 
 namespace APIPetSitting
 {
@@ -41,7 +43,10 @@ namespace APIPetSitting
             {
                 options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
             });
-            
+
+            JwtSettings bindJwtSettings = new JwtSettings();
+            Configuration.Bind("JsonWebTokenKeys", bindJwtSettings);
+
             services.AddTransient(typeof(OwnerBllService));
             services.AddTransient(typeof(OwnerDalService));
             services.AddTransient(typeof(PetSitterBllService));
@@ -59,12 +64,61 @@ namespace APIPetSitting
             {
                 return new ConnectionString(Configuration.GetConnectionString("Dev"));
             });
+
+            services.AddSingleton(bindJwtSettings);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(bindJwtSettings.IssuerSigningKey)),
+                    ValidateIssuer = bindJwtSettings.ValidateIssuer,
+                    ValidIssuer = bindJwtSettings.ValidIssuer,
+                    ValidateAudience = bindJwtSettings.ValidateAudience,
+                    ValidAudience = bindJwtSettings.ValidAudience,
+                    RequireExpirationTime = bindJwtSettings.RequireExpirationTime,
+                    ValidateLifetime = bindJwtSettings.RequireExpirationTime,
+                    ClockSkew = TimeSpan.FromDays(1),
+                };
+            });
           
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIPetSitting", Version = "v1" });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIPetSitting", Version = "v1" });
+            //});
+            // Définit l'autorisation dans swagger 
+            services.AddSwaggerGen(options => {
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme 
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference {
+                            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                        new string[] {}
+                    }
+                });
+                //options.SwaggerDoc("v1.1", new OpenApiInfo { Title = "APIPetSitting", Version = "v1.1" });
             });
         }
 
