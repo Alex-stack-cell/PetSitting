@@ -18,7 +18,7 @@ namespace APIPetSitting.Models
         public DateTime BirthDate { get; set; }
         [Required]
         public string Passwd { get; set; }
-        public int Score { get; set; }
-        public string PetPreference { get; set; }
+        public int? Score { get; set; }
+        public string? PetPreference { get; set; }
     }
 }

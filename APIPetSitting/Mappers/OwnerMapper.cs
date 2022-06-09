@@ -17,7 +17,7 @@ namespace APIPetSitting.Mappers
         {
             return new OwnerApi
             {
-                ID = (int)Bll.Id,
+                ID = Bll.Id,
                 LastName = Bll.LastName,
                 FirstName = Bll.FirstName,
                 Email = Bll.Email,

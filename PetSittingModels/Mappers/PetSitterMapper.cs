@@ -37,7 +37,7 @@ namespace BLLPetSitting.Mappers
         {
             PetSitterEntity PetSitter = new PetSitterEntity()
             {
-                ID = (int)Model.Id,
+                ID = Model.Id,
                 LastName = Model.LastName,
                 FirstName = Model.FirstName,
                 Email = Model.Email,

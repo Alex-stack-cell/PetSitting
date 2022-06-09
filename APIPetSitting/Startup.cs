@@ -18,6 +18,9 @@ using AdvertisementBllService = BLLPetSitting.Services.AdvertisementService;
 using AdvertisementDalService = DALPetSitting.Services.AdvertisementService;
 using CommentBllService = BLLPetSitting.Services.CommentService;
 using CommentDalService = DALPetSitting.Services.CommentService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace APIPetSitting
 {
@@ -33,6 +36,7 @@ namespace APIPetSitting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
@@ -55,7 +59,7 @@ namespace APIPetSitting
             {
                 return new ConnectionString(Configuration.GetConnectionString("Dev"));
             });
-
+          
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -77,6 +81,8 @@ namespace APIPetSitting
             app.UseRouting();
 
             app.UseCors("AllowAll");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

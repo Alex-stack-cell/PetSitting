@@ -19,6 +19,6 @@ namespace DALPetSitting.Abstracts
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }       
         public string Passwd { get; set; }
-        public int Score { get; set; }
+        public int? Score { get; set; }
     }
 }

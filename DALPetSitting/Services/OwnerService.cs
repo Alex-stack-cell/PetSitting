@@ -47,15 +47,14 @@ namespace DALPetSitting.Services
                         cmd.CommandText = "INSERT INTO Owner (LastName, FirstName, BirthDate, Email,Passwd,Score) VALUES (@LastName, @FirstName, @BirthDate, @Email, @Passwd, @Score)";
 
                         // Requêtes paramétrées >< Injection Sql
-                        cmd.Parameters.AddRange(new[]
-                        {
+                        cmd.AddParameters(
                             new SqlParameter("@LastName",type.LastName),
                             new SqlParameter("@FirstName",type.FirstName),
                             new SqlParameter("@BirthDate",type.BirthDate),
                             new SqlParameter("@Email", type.Email),
                             new SqlParameter("@Passwd", type.Passwd),
-                            new SqlParameter("@Score",type.Score),
-                        });
+                            new SqlParameter("@Score", type.Score)
+                        );
 
                         sqlConnection.Open();
                         int rows= cmd.ExecuteNonQuery();
@@ -135,7 +134,8 @@ namespace DALPetSitting.Services
                                     Email = (string)reader["Email"],
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = (int)reader["Score"]
+                                    Score = reader["Score"] as int?
+                                    //Score = reader["Score"] == DBNull.Value ? null : (int)reader["Score"]
                                 });
                             }
                             return list;
@@ -190,7 +190,7 @@ namespace DALPetSitting.Services
                                     Email = (string)reader["Email"],
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = (int)reader["Score"]
+                                    Score = reader["Score"] as int?
                                 });
                             }
                             return list;
@@ -222,8 +222,8 @@ namespace DALPetSitting.Services
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, Passwd = @Passwd, Score = @Score WHERE ID = @ID";
 
-                        cmd.Parameters.AddRange(new[]
-                            {
+                        cmd.AddParameters(
+                            
                             new SqlParameter("@ID",type.ID),
                             new SqlParameter("@LastName",type.LastName),
                             new SqlParameter("@FirstName",type.FirstName),
@@ -231,7 +231,7 @@ namespace DALPetSitting.Services
                             new SqlParameter("@Email", type.Email),
                             new SqlParameter("@Passwd", type.Passwd),
                             new SqlParameter("@Score",type.Score)
-                        });
+                        );
                         
                         sqlConnection.Open();
                         int row = cmd.ExecuteNonQuery();

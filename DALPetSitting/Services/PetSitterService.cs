@@ -45,16 +45,15 @@ namespace DALPetSitting.Services
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = "INSERT INTO PetSitter (LastName, FirstName, BirthDate, Email,Passwd,Score, PetPreference) VALUES (@LastName, @FirstName,  @BirthDate, @Email, @Passwd, @Score, @PetPreference)";
 
-                        cmd.Parameters.AddRange(new[] 
-                        {
+                        cmd.AddParameters(
                             new SqlParameter("LastName",type.LastName),
                             new SqlParameter("FirstName",type.FirstName),
                             new SqlParameter("BirthDate",type.BirthDate),
                             new SqlParameter("Email",type.Email),
                             new SqlParameter("Passwd",type.Passwd),
                             new SqlParameter("Score",type.Score),
-                            new SqlParameter("PetPreference",type.PetPreference),
-                        });
+                            new SqlParameter("PetPreference",type.PetPreference)
+                        );
 
                         sqlConnection.Open();
 
@@ -133,8 +132,8 @@ namespace DALPetSitting.Services
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = (int)reader["Score"],
-                                    PetPreference = (string)reader["PetPreference"]
+                                    Score = reader["Score"] as int?,
+                                    PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
                             return list;
@@ -189,8 +188,8 @@ namespace DALPetSitting.Services
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = (int)reader["Score"],
-                                    PetPreference = (string)reader["PetPreference"]
+                                    Score = reader["Score"] as int?,
+                                    PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
                             return list;
@@ -240,8 +239,8 @@ namespace DALPetSitting.Services
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = (int)reader["Score"],
-                                    PetPreference = (string)reader["PetPreference"]
+                                    Score = reader["Score"] as int?,
+                                    PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
                             return list;
@@ -272,8 +271,7 @@ namespace DALPetSitting.Services
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = "UPDATE PetSitter SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, Passwd = @Passwd, Score = @Score, PetPreference = @PetPreference WHERE ID = @ID";
 
-                        cmd.Parameters.AddRange(new[]
-                            {
+                        cmd.AddParameters(     
                            new SqlParameter("@ID",type.ID),
                            new SqlParameter("@LastName",type.LastName),
                            new SqlParameter("@FirstName",type.FirstName),
@@ -281,8 +279,8 @@ namespace DALPetSitting.Services
                            new SqlParameter("@Email", type.Email),
                            new SqlParameter("@Passwd", type.Passwd),
                            new SqlParameter("@Score",type.Score),
-                           new SqlParameter("@PetPreference",type.PetPreference),
-                        });
+                           new SqlParameter("@PetPreference",type.PetPreference)
+                        );
                         sqlConnection.Open();
                         int row = cmd.ExecuteNonQuery();
 

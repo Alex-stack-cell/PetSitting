@@ -12,6 +12,7 @@ namespace DALPetSitting.Entities
     /// </summary>
     public class PetSitter : User
     {
-        public string PetPreference { get; set; }
+        private string? _petPreference;
+        public string PetPreference { get { return this._petPreference; } set { this._petPreference = value; } }
     }
 }

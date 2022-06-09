@@ -12,10 +12,12 @@ namespace BLLPetSitting.Concretes
     /// </summary>
     public sealed class PetSitter : User
     {
-        public PetSitter(int? id,string lastName, string firstName, string email, DateTime birthDate, string passwd, int score) : base(id, lastName, firstName, email, birthDate, passwd, score)
+        private string? _petPreference;
+        public string PetPreference { get { return this._petPreference; } set { this._petPreference = value; } }
+        public PetSitter(int? id,string lastName, string firstName, string email, DateTime birthDate, string passwd, int? score) : base(id, lastName, firstName, email, birthDate, passwd, score)
         {
         }
 
-        public string PetPreference { get; set; }
+        
     }
 }

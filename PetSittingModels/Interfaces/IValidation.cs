@@ -28,14 +28,6 @@ namespace BLLPetSitting.Interfaces
         /// <returns></returns>
         //public bool hasAccount();
 
-        /// <summary>
-        /// Évalue l'email selon un pattern spécifique
-        /// Il ne doit pas contenir des points au début de l'adresse ou plusieurs points à la fin de l'adresse
-        /// Code src : <website : https://uibakery.io/regex-library/email-regex-csharp>
-        /// </summary>
-        /// <param name="email"></param>
-        /// <exception cref="CustomException"></exception>
-        public void ValidateEmail(string email);
 
         /// <summary>
         /// Évalue le mot de passe selon un pattern spécifique

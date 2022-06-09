@@ -1,10 +1,15 @@
 ﻿using APIPetSitting.Mappers;
 using APIPetSitting.Models;
 using BLLPetSitting.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,7 +23,9 @@ namespace APIPetSitting.Controllers
         public PetSitterController(PetSitterService petSitterService)
         {
             _petSitterService = petSitterService;
+            //_config = config;
         }
+      
         // GET: api/<PetSitterController>
         [HttpGet]
         public IActionResult Get()

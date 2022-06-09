@@ -36,7 +36,7 @@ namespace APIPetSitting.Mappers
         {
             PetSitterBLL petSitter = new PetSitterBLL(Api.ID, Api.LastName, Api.FirstName, Api.Email, Api.BirthDate,Api.Passwd, Api.Score);
 
-            petSitter.PetPreference = Api.PetPreference;
+            petSitter.PetPreference = (string)Api.PetPreference;
 
             return petSitter;
         }

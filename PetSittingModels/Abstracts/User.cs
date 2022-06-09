@@ -36,14 +36,14 @@ namespace BLLPetSitting.Abstracts
         /// Mot de passe d'une personne
         /// </summary>
         private string _passwd;
-        private int _score;
+        private int? _score;
 
         public string LastName { get { return _lastName; }set { this._lastName = value; } }
         public string FirstName { get { return _firstName; }set { this._firstName = value; } }
         public string Email { get { return _email; } set { this._email = value; } }
         public DateTime BirthDate { get { return _birthDate; }set { this._birthDate = value; } }
         public string Passwd { get { return _passwd; } set { this._passwd = value; } }
-        public int Score { get { return _score; } set{ this._score = value; } }
+        public int? Score { get { return _score; } set{ this._score = value; } }
 
         /// <summary>
         /// Constructeur permettant d'initialiser une personne
@@ -52,7 +52,7 @@ namespace BLLPetSitting.Abstracts
         /// <param name="firstName"></param>
         /// <param name="email"></param>
         /// <param name="birthDate"></param>
-        public User(int? id, string lastName, string firstName, string email,DateTime birthDate, string passwd, int score)
+        public User(int? id, string lastName, string firstName, string email,DateTime birthDate, string passwd, int? score)
         {
             this.Id = id;
             this._lastName = lastName;
@@ -65,7 +65,6 @@ namespace BLLPetSitting.Abstracts
             // validation
             ValidateAge();
             ValidateName(firstName, lastName);
-            ValidateEmail(email);
             ValidatePassword(passwd);
             ValidateScore();
         }
@@ -110,24 +109,6 @@ namespace BLLPetSitting.Abstracts
             else if (!validateName.IsMatch(lastName))
             {
                 throw new CustomException($"{this.FirstName}, votre nom ne respecte pas le format attendu");
-            }
-        }
-
-        /// <summary>
-        /// Évalue l'email selon un pattern spécifique
-        /// Il ne doit pas contenir des points au début de l'adresse ou plusieurs points à la fin de l'adresse
-        /// Code src : <website : https://uibakery.io/regex-library/email-regex-csharp>
-        /// </summary>
-        /// <param name="email"></param>
-        /// <exception cref="CustomException"></exception>
-        public void ValidateEmail(string email)
-        {
-            string pattern = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
-            Regex validateEmailRegex = new Regex(pattern);
-
-            if (!validateEmailRegex.IsMatch(email))
-            {
-                throw new CustomException($"{this.FirstName}, le format de votre email fournit est incorrecte");
             }
         }
 
@@ -184,7 +165,7 @@ namespace BLLPetSitting.Abstracts
         /// <exception cref="CustomException"></exception>
         public void ValidateScore()
         {
-            int score = this.Score;
+            int? score = this.Score;
             if (score < 0 || score>5)
             {
                 throw new CustomException("Le score doit être compris entre 0 et 5");

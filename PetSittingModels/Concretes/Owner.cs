@@ -12,7 +12,7 @@ namespace BLLPetSitting.Concretes
     /// </summary>
     public sealed class Owner : User
     {
-        public Owner(int? id, string lastName, string firstName, string email, DateTime birthDate, string passwd, int score) : base(id, lastName, firstName, email, birthDate, passwd, score)
+        public Owner(int? id, string lastName, string firstName, string email, DateTime birthDate, string passwd, int? score) : base(id, lastName, firstName, email, birthDate, passwd, score)
         {
             
         }

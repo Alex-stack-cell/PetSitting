@@ -9,7 +9,6 @@ namespace DALPetSitting.Repositories
     /// </summary>
     public interface ICommentRepository : IGenericRepository<Comment>
     {
-        //IEnumerable<Comment> GetAll(int id);
         IEnumerable<Comment> GetCommentByScoreAsc();
         IEnumerable<Comment> GetCommentByScoreDesc();
     }
