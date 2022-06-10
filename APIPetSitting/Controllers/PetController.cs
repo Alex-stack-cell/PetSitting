@@ -5,11 +5,13 @@ using System.Linq;
 using BLLPetSitting.Services;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace APIPetSitting.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PetController : ControllerBase
@@ -20,6 +22,7 @@ namespace APIPetSitting.Controllers
             _petService = petService;
         }
         // GET: api/<PetController>
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get()
         {
@@ -28,6 +31,7 @@ namespace APIPetSitting.Controllers
         }
 
         // GET api/<PetController>/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -36,6 +40,7 @@ namespace APIPetSitting.Controllers
         }
 
         // POST api/<PetController>
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] Pet pet)
         {

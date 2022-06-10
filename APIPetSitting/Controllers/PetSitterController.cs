@@ -61,6 +61,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<PetSitterController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] PetSitter petSitter)
         {
@@ -73,6 +74,7 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<PetSitterController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

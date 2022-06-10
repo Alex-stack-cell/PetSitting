@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using APIPetSitting.Mappers;
 using System;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace APIPetSitting.Controllers
@@ -27,7 +28,7 @@ namespace APIPetSitting.Controllers
         }
 
         // GET: api/<AdvertisementController>/Bruxelles/city
-        [HttpGet("{city}/city")]
+        [HttpGet("city/{city}")]
         public IActionResult GetByCity(string city)
         {
             IEnumerable<Advertisement> advertisements = _advertisementService.GetByCity(city).Select(a => a.ToApi());
@@ -43,14 +44,14 @@ namespace APIPetSitting.Controllers
         }
 
         //// GET api/<AdvertisementController>/5/owner
-        [HttpGet("{idOwner}/owner")]
+        [HttpGet("owner/{idOwner}")]
         public IActionResult GetByOwner(int idOwner)
         {
             IEnumerable<Advertisement> advertisements = _advertisementService.GetByOwner(idOwner).Select(a => a.ToApi());
             return Ok(advertisements);
         }
         // GET api/<AdvertisementController>/Wallonie/region
-        [HttpGet("{region}/region")]
+        [HttpGet("region/{region}")]
         public IActionResult GetByRegion(string region)
         {
             IEnumerable<Advertisement> advertisements = _advertisementService.GetByRegion(region).Select(a => a.ToApi());
@@ -58,6 +59,7 @@ namespace APIPetSitting.Controllers
         }
 
         // POST api/<AdvertisementController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Advertisement advertisement)
         {
@@ -76,6 +78,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<AdvertisementController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Advertisement advertisement)
         {
@@ -88,6 +91,7 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<AdvertisementController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

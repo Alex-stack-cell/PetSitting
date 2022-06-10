@@ -1,6 +1,7 @@
 ﻿using APIPetSitting.Mappers;
 using APIPetSitting.Models;
 using BLLPetSitting.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ namespace APIPetSitting.Controllers
         }
 
         // POST api/<PrestationController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Prestation prestation)
         {
@@ -54,6 +56,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<PrestationController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Prestation prestation)
         {
@@ -66,6 +69,7 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<PrestationController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -19,6 +19,7 @@ namespace APIPetSitting.Controllers
     {
         private readonly OwnerService _ownerService;
 
+
         public OwnerController(OwnerService ownerService)
         {
             _ownerService = ownerService;
@@ -34,6 +35,7 @@ namespace APIPetSitting.Controllers
         }
 
         // GET api/<OwnerController>/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -42,6 +44,7 @@ namespace APIPetSitting.Controllers
         }
 
         // POST api/<OwnerController>
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] Owner owner)
         {

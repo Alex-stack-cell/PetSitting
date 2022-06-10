@@ -27,7 +27,6 @@ namespace APIPetSitting.JwtHelpers
                     new Claim("Id", userAccounts.GuidId.ToString()),
                     new Claim(ClaimTypes.Name, userAccounts.FirstName),
                     new Claim(ClaimTypes.Email, userAccounts.Email),
-                    new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
                     new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))//token de durée illimité - mode dévelopement
             };
             return claims;
@@ -75,9 +74,8 @@ namespace APIPetSitting.JwtHelpers
                 // Assignation du token à l'utilisateur
                 UserToken.Token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 UserToken.FirstName = model.FirstName;
-                //UserToken.Id = model.Id;                
-                UserToken.GuidId = model.GuidId;
-                //UserToken.GuidId = Id;
+                UserToken.Email = model.Email;
+                //UserToken.RefreshToken = model.RefreshToken;
 
                 return UserToken;
             }

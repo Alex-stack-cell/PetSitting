@@ -5,6 +5,7 @@ using BLLPetSitting.Services;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,6 +50,7 @@ namespace APIPetSitting.Controllers
         }
 
         // POST api/<CommentController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Comment comment)
         {
@@ -66,6 +68,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<CommentController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Comment comment)
         {
@@ -78,6 +81,7 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<CommentController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

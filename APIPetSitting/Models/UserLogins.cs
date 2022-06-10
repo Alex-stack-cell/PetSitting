@@ -8,6 +8,5 @@ namespace APIPetSitting.Models
         public string UserEmail{get;set;}
         [Required]
         public string Password {get;set;}
-        //public UserLogins() { }
     }
 }

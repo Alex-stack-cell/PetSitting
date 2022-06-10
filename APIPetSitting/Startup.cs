@@ -100,17 +100,17 @@ namespace APIPetSitting
                 options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme."
                 });
                 options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
                     {
-                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme 
+                        new OpenApiSecurityScheme 
                         {
-                            Reference = new Microsoft.OpenApi.Models.OpenApiReference {
+                            Reference = new OpenApiReference {
                             Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         }
