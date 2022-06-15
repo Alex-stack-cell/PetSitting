@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using jwt =  APIPetSitting.JwtHelpers;
 
 namespace APIPetSitting.Controllers
 {
@@ -23,73 +24,57 @@ namespace APIPetSitting.Controllers
             this._petSitterService = petSitterService;
         }
         /// <summary>
-        /// Génère un token unique pour un propriétaire
+        /// Génère un token unique pour un utilisateur
         /// </summary>
         /// <param name="userLogins"></param>
         /// <returns></returns>
-        [Route("api/login/owner")]
+        [Route("api/login")]
         [HttpPost]
         public IActionResult GetAuthOwner(UserLogins userLogins)
         {
+            // Changer : 35 - 36 => Via controlleur GetByLogin() (Cool pour perf, et sécu. car tu peux pas récup toutes les data de tes users
             IEnumerable<Owner> logins = _ownerService.GetAll().Select(o => o.ToApi());
+            IEnumerable<PetSitter> loginsSitter = _petSitterService.GetAll().Select(p => p.ToApi());
             try
             {
                 UserTokens Token = new UserTokens();
-                bool Valid = logins.Any(x => x.Email.Equals(userLogins.UserEmail));
-                if (Valid)
+                bool isOwner = logins.Any(x => x.Email.Equals(userLogins.UserEmail));
+                bool isSitter = loginsSitter.Any(x => x.Email.Equals(userLogins.UserEmail));
+                if (isOwner) // authentification compte proprio
                 {
-                    var user = logins.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
-                    Token = JwtHelpers.JwtHelpers.GenTokenkey(new UserTokens()
+                    Owner user = logins.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
+                    Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                     {
+                        Id = (int)user.ID,
                         Email = user.Email,
-                        GuidId = Guid.NewGuid(),
                         FirstName = user.FirstName,
-                    }, _jwtSettings);
+                        isOwner = true
+                    }, _jwtSettings);                    
                 }
                 else
-                {
-                    return BadRequest("Le mot de passe ou l'email est incorrecte");
+                {                      
+                    if (isSitter)//authentification compte pet sitter
+                    {
+                        PetSitter user = loginsSitter.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
+                        Token = JwtHelpers.JwtHelpers.GenTokenkey(new UserTokens()
+                        {
+                            Id = (int)user.ID,
+                            Email = user.Email,
+                            FirstName = user.FirstName,
+                            isOwner=false
+                        }, _jwtSettings);
+                    }
+                    else
+                    {
+                        return BadRequest("Le mot de passe ou l'email est incorrecte");
+                    }                    
                 }
-                return Ok(Token);
+                return Ok(new { token = Token.Token });
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-        }
-        /// <summary>
-        /// Génère un token unique pour un pet-sitter
-        /// </summary>
-        /// <param name="userLogins"></param>
-        /// <returns></returns>
-        [Route("api/login/petSitter")]
-        [HttpPost]
-        public IActionResult GetAuthPetSitter(UserLogins userLogins)
-        {
-            IEnumerable<PetSitter> logins = _petSitterService.GetAll().Select(o => o.ToApi());
-            try
-            {
-                UserTokens Token = new UserTokens();
-                bool Valid = logins.Any(x => x.Email.Equals(userLogins.UserEmail));
-                if (Valid)
-                {
-                    var user = logins.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
-                    Token = JwtHelpers.JwtHelpers.GenTokenkey(new UserTokens()
-                    {
-                        Email = user.Email,
-                        FirstName = user.FirstName,
-                    }, _jwtSettings);
-                }
-                else
-                {
-                    return BadRequest("Le mot de passe ou l'email est incorrecte");
-                }
-                return Ok(Token);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        }        
     }
 }

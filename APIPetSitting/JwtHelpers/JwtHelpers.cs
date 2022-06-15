@@ -15,28 +15,23 @@ namespace APIPetSitting.JwtHelpers
     {
         /// <summary>
         /// Récupère les paires nom-valeur (claim) permettant d'identifier un utilisateur.
-        /// Une claim est une paire clé-valeur fournie par l'utilisateur 
-        /// utilisée pour générer un Token
+        /// Une claim est une paire clé-valeur, dont la valeur est renseignée par l'utilisateur 
+        /// pour générer un Token
         /// </summary>
         /// <param name="userAccounts"></param>
-        /// <param name="Id"></param>
         /// <returns></returns>
-        public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, Guid Id)
+        public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts)
         {
             IEnumerable<Claim> claims = new Claim[] {
-                    new Claim("Id", userAccounts.GuidId.ToString()),
-                    new Claim(ClaimTypes.Name, userAccounts.FirstName),
-                    new Claim(ClaimTypes.Email, userAccounts.Email),
-                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))//token de durée illimité - mode dévelopement
+                    new Claim("Id", userAccounts.Id.ToString()),
+                    new Claim("Username", userAccounts.FirstName),
+                    new Claim("Owner", userAccounts.isOwner.ToString()),
+                    //new Claim(ClaimTypes.Email, userAccounts.Email),
+                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))//token de durée d'1 jour - mode dévelopement
             };
             return claims;
         }
 
-        public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts, out Guid Id)
-        {
-            Id = Guid.NewGuid();// génère un GUID aléatoire garantissant que le token fournit est tjrs !=
-            return GetClaims(userAccounts, Id);
-        }
         /// <summary>
         /// Génère un Token pour un utilisateur sur base de sa "claim" respective
         /// </summary>
@@ -55,14 +50,14 @@ namespace APIPetSitting.JwtHelpers
                 Guid Id = Guid.Empty;
                 DateTime expireTime = DateTime.UtcNow.AddDays(1);
 
-                // Récupération des clés spécifiés dans appsettings.json + définition de la date d'exp.
-                UserToken.Validaty = expireTime.TimeOfDay;
+                // Récupération des clés spécifiés dans appsettings.json
+                //UserToken.Validaty = expireTime.TimeOfDay;
 
                 JwtSecurityToken JWToken = new JwtSecurityToken
                     (
                         issuer: jwtSettings.ValidIssuer, 
                         audience: jwtSettings.ValidAudience, 
-                        claims: GetClaims(model, out Id), 
+                        claims: GetClaims(model), 
                         notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                         expires: new DateTimeOffset(expireTime).DateTime,
                         signingCredentials: new SigningCredentials
@@ -73,9 +68,9 @@ namespace APIPetSitting.JwtHelpers
 
                 // Assignation du token à l'utilisateur
                 UserToken.Token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                UserToken.FirstName = model.FirstName;
-                UserToken.Email = model.Email;
-                //UserToken.RefreshToken = model.RefreshToken;
+                //UserToken.Email = model.Email;
+                UserToken.isOwner =  model.isOwner;
+                UserToken.Id = model.Id;
 
                 return UserToken;
             }
