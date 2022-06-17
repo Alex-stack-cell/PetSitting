@@ -94,6 +94,7 @@ namespace DALPetSitting.Services
 
                         cmd.Parameters.Add(PId);
 
+                        sqlConnection.Open();
                         int row = cmd.ExecuteNonQuery();
                         return row;
                     }

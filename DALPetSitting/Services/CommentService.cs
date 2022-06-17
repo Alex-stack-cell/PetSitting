@@ -17,10 +17,6 @@ namespace DALPetSitting.Services
     public class CommentService : ICommentRepository
     {
         private string _cnnstring;
-        public CommentService(ConnectionString cnstr)
-        {
-            this._cnnstring = cnstr.Value;
-        }
 
         private SqlConnection CreateConnection()
         {

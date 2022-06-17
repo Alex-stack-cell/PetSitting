@@ -18,6 +18,8 @@ using AdvertisementBllService = BLLPetSitting.Services.AdvertisementService;
 using AdvertisementDalService = DALPetSitting.Services.AdvertisementService;
 using CommentBllService = BLLPetSitting.Services.CommentService;
 using CommentDalService = DALPetSitting.Services.CommentService;
+using AccountDalService = DALPetSitting.Services.AccountService;
+using AccountBllService = BLLPetSitting.Services.AccountService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -59,6 +61,8 @@ namespace APIPetSitting
             services.AddTransient(typeof(AdvertisementDalService));
             services.AddTransient(typeof(CommentBllService));
             services.AddTransient(typeof(CommentDalService));
+            services.AddTransient(typeof(AccountDalService));
+            services.AddTransient(typeof(AccountBllService));
 
             services.AddSingleton(typeof(ConnectionString), (s) =>
             {

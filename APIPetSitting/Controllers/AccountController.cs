@@ -8,20 +8,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using jwt =  APIPetSitting.JwtHelpers;
+using APIPetSitting.CredentialsHelpers;
 
 namespace APIPetSitting.Controllers
 {
+    /// <summary>
+    /// Controlleur responsable de la connection d'un utilisateur sur la plateforme.
+    /// Une fois reconnu dans la db, un token lui est affublé.
+    /// Rmq générale : La logique ne se met pas dans le controller. Cependant par soucis de lecture et de temps elle fût implémenté insitu
+    /// </summary>
     [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly OwnerService _ownerService;
-        private readonly PetSitterService _petSitterService;
-        public AccountController(JwtSettings jwtSettings, OwnerService ownerService, PetSitterService petSitterService)
+        private readonly AccountService _accountService;
+        public AccountController(JwtSettings jwtSettings, AccountService accountService)
         {
             this._jwtSettings = jwtSettings;
-            this._ownerService = ownerService;
-            this._petSitterService = petSitterService;
+      
+            this._accountService = accountService;
         }
         /// <summary>
         /// Génère un token unique pour un utilisateur
@@ -30,49 +35,54 @@ namespace APIPetSitting.Controllers
         /// <returns></returns>
         [Route("api/login")]
         [HttpPost]
-        public IActionResult GetAuthOwner(UserLogins userLogins)
+        public IActionResult GetAuth(UserLogins userLogins)
         {
-            // Changer : 35 - 36 => Via controlleur GetByLogin() (Cool pour perf, et sécu. car tu peux pas récup toutes les data de tes users
-            IEnumerable<Owner> logins = _ownerService.GetAll().Select(o => o.ToApi());
-            IEnumerable<PetSitter> loginsSitter = _petSitterService.GetAll().Select(p => p.ToApi());
+            VerifyEmail verifyEmail = new VerifyEmail(_accountService);
+            bool ownerExist = verifyEmail.emailOwnerExist(userLogins.UserEmail);
+            UserTokens Token = new UserTokens();
+
             try
             {
-                UserTokens Token = new UserTokens();
-                bool isOwner = logins.Any(x => x.Email.Equals(userLogins.UserEmail));
-                bool isSitter = loginsSitter.Any(x => x.Email.Equals(userLogins.UserEmail));
-                if (isOwner) // authentification compte proprio
+                //vérifie si le compte utilisateur est : propriétaire
+                if (ownerExist)
                 {
-                    Owner user = logins.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
+                    // Si le compte existe un token est généré
+                    Account ownerCredential = verifyEmail.GetOwnerCredential(userLogins.UserEmail);
+
                     Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                     {
-                        Id = (int)user.ID,
-                        Email = user.Email,
-                        FirstName = user.FirstName,
+                        Id = (int)ownerCredential.ID,
+                        Email = ownerCredential.Email,
+                        FirstName = ownerCredential.FirstName,
                         isOwner = true
-                    }, _jwtSettings);                    
+                    }, _jwtSettings);
+
                 }
-                else
-                {                      
-                    if (isSitter)//authentification compte pet sitter
+                else //Sinon check si c'est un petSitter
+                {
+                    bool petSitterExist = verifyEmail.emailPetSitterExist(userLogins.UserEmail);
+                    if (petSitterExist)
                     {
-                        PetSitter user = loginsSitter.FirstOrDefault(x => x.Email.Equals(userLogins.UserEmail));
-                        Token = JwtHelpers.JwtHelpers.GenTokenkey(new UserTokens()
+                        Account sitterCredential = verifyEmail.GetPetSitterCredential(userLogins.UserEmail);
+
+                        Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                         {
-                            Id = (int)user.ID,
-                            Email = user.Email,
-                            FirstName = user.FirstName,
-                            isOwner=false
+                            Id = (int)sitterCredential.ID,
+                            Email = sitterCredential.Email,
+                            FirstName = sitterCredential.FirstName,
+                            isOwner = true
                         }, _jwtSettings);
                     }
-                    else
+                    else // A contrario l'utilisateur n'existe pas dans la db
                     {
                         return BadRequest("Le mot de passe ou l'email est incorrecte");
-                    }                    
+                    }
                 }
                 return Ok(new { token = Token.Token });
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
         }        
