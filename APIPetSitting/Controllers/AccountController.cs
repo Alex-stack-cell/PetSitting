@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using jwt =  APIPetSitting.JwtHelpers;
 using APIPetSitting.CredentialsHelpers;
+using Microsoft.Extensions.Logging;
 
 namespace APIPetSitting.Controllers
 {

@@ -6,6 +6,7 @@ using DALPetSitting;
 using DALPetSitting.Services;
 using DALPetSitting.Entities;
 using DALPetSitting.Infra;
+using BLLPetSitting.Helpers;
 
 namespace PetSitting
 {
@@ -28,6 +29,13 @@ namespace PetSitting
             //{
             //    Console.WriteLine(item.Email);
             //}
+
+            byte[] salt = Crypto.GenerateSalt();
+            string passwordClear = "Test1234=*";
+
+            string passwordHashed = Crypto.HashPassword(salt, passwordClear);
+
+            Console.WriteLine("Hashed password : "+ passwordHashed + " - Clear Password : " + passwordClear);
 
         }
     }
