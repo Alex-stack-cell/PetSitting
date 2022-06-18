@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AdoTools" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 

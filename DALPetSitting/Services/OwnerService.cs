@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using DALPetSitting.Helpers;
 
 namespace DALPetSitting.Services
 {
@@ -43,8 +44,13 @@ namespace DALPetSitting.Services
                 {                    
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "INSERT INTO Owner (LastName, FirstName, BirthDate, Email,Passwd,Score) VALUES (@LastName, @FirstName, @BirthDate, @Email, @Passwd, @Score)";
+                        cmd.CommandType = CommandType.Text; 
+
+                        byte[] salt = Crypto.GenerateSalt();
+                        string clearPassword = type.Passwd;
+                        string hashedPassword = Crypto.HashPassword(salt, clearPassword);
+
+                        cmd.CommandText = "INSERT INTO Owner (LastName, FirstName, BirthDate, Email, HashPasswd, Salt, Score) VALUES (@LastName, @FirstName, @BirthDate, @Email, @HashPasswd, @Salt,@Score)";
 
                         // Requêtes paramétrées >< Injection Sql
                         cmd.AddParameters(
@@ -52,7 +58,8 @@ namespace DALPetSitting.Services
                             new SqlParameter("@FirstName",type.FirstName),
                             new SqlParameter("@BirthDate",type.BirthDate),
                             new SqlParameter("@Email", type.Email),
-                            new SqlParameter("@Passwd", type.Passwd),
+                            new SqlParameter("@HashPasswd", hashedPassword),
+                            new SqlParameter("@Salt", salt),
                             new SqlParameter("@Score", type.Score)
                         );
 
@@ -120,7 +127,7 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Passwd, Score FROM Owner";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Score FROM Owner";
 
                         sqlConnection.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -133,7 +140,6 @@ namespace DALPetSitting.Services
                                     FirstName = (string)reader["FirstName"],
                                     Email = (string)reader["Email"],
                                     BirthDate = (DateTime)reader["BirthDate"],
-                                    Passwd = (string)reader["Passwd"],
                                     Score = reader["Score"] as int?
                                     //Score = reader["Score"] == DBNull.Value ? null : (int)reader["Score"]
                                 });
@@ -166,7 +172,7 @@ namespace DALPetSitting.Services
                     {
                         // Requête paramétrée >< Injection Sql
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Passwd, Score FROM Owner WHERE ID = @ID";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Score FROM Owner WHERE ID = @ID";
 
                         SqlParameter PId = new SqlParameter();
                         PId.ParameterName = "ID";
@@ -189,7 +195,6 @@ namespace DALPetSitting.Services
                                     FirstName = (string)reader["FirstName"],
                                     Email = (string)reader["Email"],
                                     BirthDate = (DateTime)reader["BirthDate"],
-                                    Passwd = (string)reader["Passwd"],
                                     Score = reader["Score"] as int?
                                 });
                             }
@@ -220,7 +225,11 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, Passwd = @Passwd, Score = @Score WHERE ID = @ID";
+                        cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt, Score = @Score WHERE ID = @ID";
+
+                        byte[] salt = Crypto.GenerateSalt();
+                        string clearPassword = type.Passwd;
+                        string hashedPassword = Crypto.HashPassword(salt, clearPassword);
 
                         cmd.AddParameters(
                             
@@ -229,7 +238,8 @@ namespace DALPetSitting.Services
                             new SqlParameter("@FirstName",type.FirstName),
                             new SqlParameter("@BirthDate",type.BirthDate),
                             new SqlParameter("@Email", type.Email),
-                            new SqlParameter("@Passwd", type.Passwd),
+                            new SqlParameter("@HashPasswd", hashedPassword),
+                            new SqlParameter("@Salt", salt),
                             new SqlParameter("@Score",type.Score)
                         );
                         

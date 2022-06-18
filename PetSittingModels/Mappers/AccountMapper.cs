@@ -27,6 +27,7 @@ namespace BLLPetSitting.Mappers
                 ID = Bll.ID,
                 Email = Bll.Email,
                 FirstName = Bll.FirstName,
+                Passwd = Bll.Passwd,
             };
         }
     }

@@ -30,8 +30,10 @@ namespace APIPetSitting.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<Owner> owners = _ownerService.GetAll().Select(o => o.ToApi());
-            return Ok(owners);
+            IEnumerable<Owner> allOwnersData = _ownerService.GetAll().Select(o => o.ToApi());
+            IEnumerable<object> essentialOwnersData = allOwnersData.Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email, o.Score }) ;
+
+            return Ok(essentialOwnersData);
         }
 
         // GET api/<OwnerController>/5
@@ -39,8 +41,10 @@ namespace APIPetSitting.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            IEnumerable<Owner> owner = _ownerService.GetById(id).Select(o=>o.ToApi());
-            return Ok(owner);
+            IEnumerable<Owner> allOwnerData = _ownerService.GetById(id).Select(o=>o.ToApi());
+            object essentialOwnerInfo = allOwnerData.Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email, o.Score });
+
+            return Ok(essentialOwnerInfo);
         }
 
         // POST api/<OwnerController>

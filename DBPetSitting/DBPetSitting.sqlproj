@@ -66,7 +66,4 @@
     <Build Include="Prestation.sql" />
     <Build Include="Comment.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Script.PostDeployment.InsertionOwner.sql" />
-  </ItemGroup>
 </Project>

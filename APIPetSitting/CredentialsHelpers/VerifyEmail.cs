@@ -43,18 +43,18 @@ namespace APIPetSitting.CredentialsHelpers
             return exist;
         }
 
-        public Account GetOwnerCredential(string credentialToVerify)
-        {
-            Account ownerCredential = _accountService.GetOwnerCredentials(credentialToVerify).ToApi();
+        //public Account GetOwnerCredential(string credentialToVerify)
+        //{
+        //    Account ownerCredential = _accountService.GetOwnerCredentials(credentialToVerify).ToApi();
 
-            return ownerCredential;
-        }
+        //    return ownerCredential;
+        //}
 
-        public Account GetPetSitterCredential(string credentialToVerify)
-        {
-            Account petSitterCredential = _accountService.GetPetSitterCredentials(credentialToVerify).ToApi();
+        //public Account GetPetSitterCredential(string credentialToVerify)
+        //{
+        //    Account petSitterCredential = _accountService.GetPetSitterCredentials(credentialToVerify).ToApi();
 
-            return petSitterCredential;
-        }
+        //    return petSitterCredential;
+        //}
     }
 }

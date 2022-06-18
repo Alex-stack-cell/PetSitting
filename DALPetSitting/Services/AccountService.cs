@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DALPetSitting.Helpers;
 
 namespace DALPetSitting.Services
 {
@@ -98,6 +99,75 @@ namespace DALPetSitting.Services
             }
         }
 
+        /// <summary>
+        /// Authentifie le mdp du owner
+        /// </summary>
+        /// <param name="ownerEmail"></param>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
+        public bool isOwnerPasswordValid(string ownerEmail, string passwdToVerify)
+        {
+            try
+            {
+                Account accountToVerify = new Account();
+                byte[] salt;
+                string hashedPasswordToVerify;
+                string expectedHashedPassword;
+
+                bool isPasswordValid = false;
+
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        SqlParameter PEmail = new SqlParameter();
+
+                        PEmail.ParameterName = "Email";
+                        PEmail.IsNullable = false;
+                        PEmail.Value = ownerEmail;
+
+                        cmd.AddParameters(PEmail);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT HashPasswd, Salt FROM Owner WHERE Email = @Email";
+                        
+
+                        sqlConnection.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                accountToVerify = new Account()
+                                {
+                                    HashPasswd = (string)reader["HashPasswd"],
+                                    Salt = (byte[])reader["Salt"],
+                                };
+                            }
+
+                            salt = accountToVerify.Salt;
+                            expectedHashedPassword = accountToVerify.HashPasswd;
+                            hashedPasswordToVerify = Crypto.HashPassword(salt, passwdToVerify);
+                            // si le mdp fournit en claire une fois haché match avec celui en db => Ok
+                            if(expectedHashedPassword == hashedPasswordToVerify)
+                            {
+                                isPasswordValid = true;
+                            }
+                            return isPasswordValid;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        /// <summary>
+        /// Récupère les info du proprio. nécessaire pour les claims (Token)
+        /// </summary>
+        /// <param name="credentialToVerify"></param>
+        /// <returns></returns>
         public Account GetOwnerCredentials(string credentialToVerify)
         {
             try
@@ -140,6 +210,11 @@ namespace DALPetSitting.Services
                 throw ex;
             }
         }
+        /// <summary>
+        /// Récupère les info du sitter. nécessaire pour les claims (Token)
+        /// </summary>
+        /// <param name="credentialToVerify"></param>
+        /// <returns></returns>
 
         public Account GetPetSitterCredentials(string credentialToVerify)
         {

@@ -38,6 +38,11 @@ namespace BLLPetSitting.Services
         {
             return _accountService.GetPetSitterCredentials(credentialToVerify).ToBll();
         }
+
+        public bool isOwnerPasswordValid(string ownerEmail, string passwdToVerify)
+        {
+            return _accountService.isOwnerPasswordValid(ownerEmail, passwdToVerify);
+        }
     }
 }
 

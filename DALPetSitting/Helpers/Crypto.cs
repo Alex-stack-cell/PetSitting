@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace BLLPetSitting.Helpers
+namespace DALPetSitting.Helpers
 {
     public static class Crypto
     {

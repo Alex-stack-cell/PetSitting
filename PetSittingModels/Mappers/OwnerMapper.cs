@@ -17,7 +17,9 @@ namespace BLLPetSitting.Mappers
         /// <returns></returns>
         public static OwnerBll ToBll(this OwnerEntity Entity)
         {
-            return new OwnerBll(Entity.ID,Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd, Entity.Score);            
+            OwnerBll owner =  new OwnerBll(Entity.ID,Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd, Entity.Score);
+
+            return owner;
         }
         /// <summary>
         /// Correspondance du Owner de la BLL vers la DAL

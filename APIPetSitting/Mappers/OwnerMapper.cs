@@ -33,7 +33,9 @@ namespace APIPetSitting.Mappers
         /// <returns></returns>
         public static OwnerBLL ToBll(this OwnerApi Model)
         {
-            return new OwnerBLL(Model.ID,Model.LastName,Model.FirstName,Model.Email,Model.BirthDate,Model.Passwd,Model.Score);
+            OwnerBLL owner =  new OwnerBLL(Model.ID,Model.LastName,Model.FirstName,Model.Email,Model.BirthDate,Model.Passwd,Model.Score);
+
+            return owner;
         }
     }
 }

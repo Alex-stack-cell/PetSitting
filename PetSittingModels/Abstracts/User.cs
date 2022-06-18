@@ -36,6 +36,9 @@ namespace BLLPetSitting.Abstracts
         /// Mot de passe d'une personne
         /// </summary>
         private string _passwd;
+        /// <summary>
+        /// Score d'un utilisateur
+        /// </summary>
         private int? _score;
 
         public string LastName { get { return _lastName; }set { this._lastName = value; } }
@@ -65,7 +68,11 @@ namespace BLLPetSitting.Abstracts
             // validation
             ValidateAge();
             ValidateName(firstName, lastName);
-            ValidatePassword(passwd);
+            // validation du mdp seulement si l'opération est diff. du getAll/getById 
+            if (!string.IsNullOrWhiteSpace(passwd) && passwd != "")
+            {
+                ValidatePassword(passwd);
+            }
             ValidateScore();
         }
 
@@ -133,11 +140,13 @@ namespace BLLPetSitting.Abstracts
             // le mot de passe doit contenir au moins un symbol
             Regex verifySymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
 
-            if (string.IsNullOrWhiteSpace(passwd) && passwd != "")
-            {
-                throw new CustomException($"Le mot de passe ne peut pas être vide pour { this.FirstName }");
-            }
-            else if (!verifyNumber.IsMatch(passwd))
+            //if (string.IsNullOrWhiteSpace(passwd) && passwd != "")
+            //{
+            //    throw new CustomException($"Le mot de passe ne peut pas être vide pour { this.FirstName }");
+            //}
+            //else 
+            
+            if (!verifyNumber.IsMatch(passwd))
             {
                 throw new CustomException($"Le mot de passe doit contenir un nombre pour { this.FirstName }");
             }

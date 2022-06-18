@@ -39,16 +39,21 @@ namespace APIPetSitting.Controllers
         public IActionResult GetAuth(UserLogins userLogins)
         {
             VerifyEmail verifyEmail = new VerifyEmail(_accountService);
+            VerifyPasswd verifyPasswd = new VerifyPasswd(_accountService);
+            GetCredentials getCredentials = new GetCredentials(_accountService);
+
             bool ownerExist = verifyEmail.emailOwnerExist(userLogins.UserEmail);
+            bool ownerPasswdValid = verifyPasswd.isOwnerPasswordValid(userLogins.UserEmail, userLogins.Password);
+
             UserTokens Token = new UserTokens();
 
             try
             {
-                //vérifie si le compte utilisateur est : propriétaire
-                if (ownerExist)
+                //vérifie si le compte utilisateur est : propriétaire et mdp fournit est Ok
+                if (ownerExist && ownerPasswdValid)
                 {
-                    // Si le compte existe un token est généré
-                    Account ownerCredential = verifyEmail.GetOwnerCredential(userLogins.UserEmail);
+                    // Si le compte existe et mdp correct un token est généré
+                    Account ownerCredential = getCredentials.GetOwnerCredential(userLogins.UserEmail);
 
                     Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                     {
@@ -59,12 +64,12 @@ namespace APIPetSitting.Controllers
                     }, _jwtSettings);
 
                 }
-                else //Sinon check si c'est un petSitter
+                else //Sinon check si le compte appartient à un petSitter
                 {
                     bool petSitterExist = verifyEmail.emailPetSitterExist(userLogins.UserEmail);
                     if (petSitterExist)
                     {
-                        Account sitterCredential = verifyEmail.GetPetSitterCredential(userLogins.UserEmail);
+                        Account sitterCredential = getCredentials.GetPetSitterCredential(userLogins.UserEmail);
 
                         Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                         {
