@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using DALPetSitting.Helpers;
+using DALPetSitting.Abstracts;
 
 namespace DALPetSitting.Services
 {
@@ -50,7 +51,7 @@ namespace DALPetSitting.Services
                         string clearPassword = type.Passwd;
                         string hashedPassword = Crypto.HashPassword(salt, clearPassword);
 
-                        cmd.CommandText = "INSERT INTO Owner (LastName, FirstName, BirthDate, Email, HashPasswd, Salt, Score) VALUES (@LastName, @FirstName, @BirthDate, @Email, @HashPasswd, @Salt,@Score)";
+                        cmd.CommandText = "INSERT INTO Owner (LastName, FirstName, BirthDate, Email, HashPasswd, Salt) VALUES (@LastName, @FirstName, @BirthDate, @Email, @HashPasswd, @Salt)";
 
                         // Requêtes paramétrées >< Injection Sql
                         cmd.AddParameters(
@@ -59,8 +60,7 @@ namespace DALPetSitting.Services
                             new SqlParameter("@BirthDate",type.BirthDate),
                             new SqlParameter("@Email", type.Email),
                             new SqlParameter("@HashPasswd", hashedPassword),
-                            new SqlParameter("@Salt", salt),
-                            new SqlParameter("@Score", type.Score)
+                            new SqlParameter("@Salt", salt)
                         );
 
                         sqlConnection.Open();
@@ -127,7 +127,7 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Score FROM Owner";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate FROM Owner";
 
                         sqlConnection.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -140,7 +140,7 @@ namespace DALPetSitting.Services
                                     FirstName = (string)reader["FirstName"],
                                     Email = (string)reader["Email"],
                                     BirthDate = (DateTime)reader["BirthDate"],
-                                    Score = reader["Score"] as int?
+                                    //Score = reader["Score"] as int?
                                     //Score = reader["Score"] == DBNull.Value ? null : (int)reader["Score"]
                                 });
                             }
@@ -172,7 +172,7 @@ namespace DALPetSitting.Services
                     {
                         // Requête paramétrée >< Injection Sql
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate, Score FROM Owner WHERE ID = @ID";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, Email, BirthDate FROM Owner WHERE ID = @ID";
 
                         SqlParameter PId = new SqlParameter();
                         PId.ParameterName = "ID";
@@ -194,8 +194,8 @@ namespace DALPetSitting.Services
                                     LastName = (string)reader["LastName"],
                                     FirstName = (string)reader["FirstName"],
                                     Email = (string)reader["Email"],
-                                    BirthDate = (DateTime)reader["BirthDate"],
-                                    Score = reader["Score"] as int?
+                                    BirthDate = (DateTime)reader["BirthDate"]
+                                    //Score = reader["Score"] as int?
                                 });
                             }
                             return list;
@@ -208,6 +208,58 @@ namespace DALPetSitting.Services
 
                 throw ex;
             }            
+        }
+        
+        /// <summary>
+        /// Sélectionner les données de l'utilisateur pour le tableau de bord
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public DashboardOwner GetDashboard(int userId)
+        {
+            try
+            {
+                DashboardOwner ownerDashboard = new DashboardOwner();
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "Select * FROM V_Owner WHERE Id = @ID";
+
+                        SqlParameter PId = new SqlParameter();
+                        PId.ParameterName = "ID";
+                        PId.IsNullable = false;
+                        PId.Value = userId;
+                        PId.SqlDbType = SqlDbType.Int;
+
+                        cmd.AddParameters(PId);
+
+                        sqlConnection.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ownerDashboard = new DashboardOwner()
+                                {
+                                    ID = (int)reader["ID"],
+                                    LastName = (string)reader["LastName"],
+                                    FirstName = (string)reader["FirstName"],
+                                    BirthDate = (DateTime)reader["BirthDate"],
+                                    Email = (string)reader["Email"],
+                                    Score = reader["Score"] == DBNull.Value ? null : (float)         reader["Score"]
+                                };                                
+                            }
+                        }
+                        return ownerDashboard;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
         }
         /// <summary>
         /// Met à jour un propriétaire dans la base de données 
@@ -225,7 +277,7 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt, Score = @Score WHERE ID = @ID";
+                        cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt WHERE ID = @ID";
 
                         byte[] salt = Crypto.GenerateSalt();
                         string clearPassword = type.Passwd;
@@ -239,8 +291,8 @@ namespace DALPetSitting.Services
                             new SqlParameter("@BirthDate",type.BirthDate),
                             new SqlParameter("@Email", type.Email),
                             new SqlParameter("@HashPasswd", hashedPassword),
-                            new SqlParameter("@Salt", salt),
-                            new SqlParameter("@Score",type.Score)
+                            new SqlParameter("@Salt", salt)
+                            //new SqlParameter("@Score",type.Score)
                         );
                         
                         sqlConnection.Open();
@@ -254,6 +306,6 @@ namespace DALPetSitting.Services
             {
                 throw ex;
             }                    
-        }
+        }       
     }
 }

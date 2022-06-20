@@ -6,8 +6,6 @@
 	[BirthDate] DATETIME2 NOT NULL,
 	[Email] NVARCHAR (60) NOT NULL,
 	[HashPasswd] NVARCHAR(MAX) NOT NULL,
-	[Salt] varbinary(16),
-	[Score] INT DEFAULT 0,
-	CHECK ([Score] BETWEEN 0 AND 5),
+	[Salt] varbinary(16) NOT NULL,
 	CONSTRAINT [PK_Owner] PRIMARY KEY ([ID])	
 )

@@ -1,4 +1,6 @@
-﻿using DALPetSitting.Entities;
+﻿using DALPetSitting.Abstracts;
+using DALPetSitting.Entities;
+using DALPetSitting.Helpers;
 using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
 using System;
@@ -43,15 +45,20 @@ namespace DALPetSitting.Services
                     using(SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "INSERT INTO PetSitter (LastName, FirstName, BirthDate, Email,Passwd,Score, PetPreference) VALUES (@LastName, @FirstName,  @BirthDate, @Email, @Passwd, @Score, @PetPreference)";
+
+                        byte[] salt = Crypto.GenerateSalt();
+                        string clearPassword = type.Passwd;
+                        string hashedPassword = Crypto.HashPassword(salt, clearPassword);
+
+                        cmd.CommandText = "INSERT INTO PetSitter (LastName, FirstName, BirthDate, Email,HashPasswd, Salt, PetPreference) VALUES (@LastName, @FirstName,  @BirthDate, @Email, @HashPasswd, @Salt, @PetPreference)";
 
                         cmd.AddParameters(
                             new SqlParameter("LastName",type.LastName),
                             new SqlParameter("FirstName",type.FirstName),
                             new SqlParameter("BirthDate",type.BirthDate),
                             new SqlParameter("Email",type.Email),
-                            new SqlParameter("Passwd",type.Passwd),
-                            new SqlParameter("Score",type.Score),
+                            new SqlParameter("HashPasswd", hashedPassword),
+                            new SqlParameter("Salt", salt),
                             new SqlParameter("PetPreference",type.PetPreference)
                         );
 
@@ -118,7 +125,7 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, BirthDate, Email, Passwd, Score, PetPreference FROM PetSitter";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, BirthDate, Email, PetPreference FROM PetSitter";
                         sqlConnection.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -131,8 +138,7 @@ namespace DALPetSitting.Services
                                     FirstName = (string)reader["FirstName"],
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
-                                    Passwd = (string)reader["Passwd"],
-                                    Score = reader["Score"] as int?,
+                                    //Score = reader["Score"] as int?,
                                     PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
@@ -164,7 +170,7 @@ namespace DALPetSitting.Services
                     {
                         // Requête paramétrée >< Injection Sql
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT ID, LastName, FirstName, BirthDate, Email, Passwd, Score, PetPreference FROM PetSitter WHERE ID = @ID";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, BirthDate, Email, PetPreference FROM PetSitter WHERE ID = @ID";
                         
                         SqlParameter PId = new SqlParameter();
                         PId.ParameterName = "ID";
@@ -188,7 +194,7 @@ namespace DALPetSitting.Services
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = reader["Score"] as int?,
+                                    //Score = reader["Score"] as int?,
                                     PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
@@ -217,7 +223,7 @@ namespace DALPetSitting.Services
                     using(SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType=CommandType.Text;
-                        cmd.CommandText = "SELECT * FROM PetSitter WHERE PetPreference = @petPreference";
+                        cmd.CommandText = "SELECT ID, LastName, FirstName, BirthDate, Email, PetPreference FROM PetSitter WHERE PetPreference = @petPreference";
 
                         SqlParameter PPreference = new SqlParameter();
                         PPreference.ParameterName = "petPreference";
@@ -239,7 +245,7 @@ namespace DALPetSitting.Services
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
                                     Passwd = (string)reader["Passwd"],
-                                    Score = reader["Score"] as int?,
+                                    //Score = reader["Score"] as int?,
                                     PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }
@@ -250,6 +256,54 @@ namespace DALPetSitting.Services
             }
             catch (SqlException ex)
             {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Récupère les info pour le tableau de bord du petsitter
+        /// </summary>
+        /// <param name="petSitterId"></param>
+        /// <returns></returns>
+        public DashboardPetSitter GetDashboard(int petSitterId)
+        {
+            try
+            {
+                DashboardPetSitter petSitterDashboard = new DashboardPetSitter();
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT * FROM V_PetSitter WHERE Id = @ID";
+
+                        SqlParameter PId = new SqlParameter();
+                        PId.ParameterName = "ID";
+                        PId.IsNullable = false;
+                        PId.Value = petSitterId;
+
+                        cmd.Parameters.Add(PId);
+                        sqlConnection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            petSitterDashboard = new DashboardPetSitter()
+                            {
+                                ID = (int)reader["Id"],
+                                LastName = (string)reader["LastName"],
+                                FirstName = (string)reader["FirstName"],
+                                BirthDate = (DateTime)reader["BirthDate"],
+                                Email = (string)reader["Email"],
+                                PetPreference = (string)reader["PetPreference"],
+                                Score = reader["Score"] == DBNull.Value ? null : (float)reader["Score"]
+                            };
+                        }
+                        return petSitterDashboard;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
                 throw ex;
             }
         }
@@ -269,7 +323,11 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE PetSitter SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, Passwd = @Passwd, Score = @Score, PetPreference = @PetPreference WHERE ID = @ID";
+                        cmd.CommandText = "UPDATE PetSitter SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt, PetPreference = @PetPreference WHERE ID = @ID";
+
+                        byte[] salt = Crypto.GenerateSalt();
+                        string clearPassword = type.Passwd;
+                        string hashedPassword = Crypto.HashPassword(salt, clearPassword);
 
                         cmd.AddParameters(     
                            new SqlParameter("@ID",type.ID),
@@ -277,8 +335,9 @@ namespace DALPetSitting.Services
                            new SqlParameter("@FirstName",type.FirstName),
                            new SqlParameter("@BirthDate",type.BirthDate),
                            new SqlParameter("@Email", type.Email),
-                           new SqlParameter("@Passwd", type.Passwd),
-                           new SqlParameter("@Score",type.Score),
+                           new SqlParameter("@HashPasswd", hashedPassword),
+                           new SqlParameter("@Salt", salt),
+                           //new SqlParameter("@Score",type.Score),
                            new SqlParameter("@PetPreference",type.PetPreference)
                         );
                         sqlConnection.Open();

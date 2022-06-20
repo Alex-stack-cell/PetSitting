@@ -20,7 +20,6 @@ namespace DALPetSitting.Abstracts
         public DateTime BirthDate { get; set; }       
         public string Passwd { get; set; }
         public string HashPasswd { get; set; }
-        public byte[] Salt{ get; set; }
-        public int? Score { get; set; }
+        public byte[] Salt{ get; set; }        
     }
 }

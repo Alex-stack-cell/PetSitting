@@ -41,6 +41,10 @@ namespace BLLPetSitting.Services
         {
             return _petSitterDalService.GetByPreference(preference).Select(p => p.ToBll());
         }
+        public DashboardPetSitter GetDashboard(int petSitterId)
+        {
+            return _petSitterDalService.GetDashboard(petSitterId).ToBll();
+        }
         public int Update(PetSitter petSitter)
         {
             return _petSitterDalService.Update(petSitter.ToDal());

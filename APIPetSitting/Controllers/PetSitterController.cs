@@ -30,16 +30,20 @@ namespace APIPetSitting.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-             IEnumerable<PetSitter> petSitters = _petSitterService.GetAll().Select(p=>p.ToApi());
-            return Ok(petSitters);
+            IEnumerable<PetSitter> allSittersData = _petSitterService.GetAll().Select(p=>p.ToApi());
+            IEnumerable<object> essentialSittersData = allSittersData.Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email, o.PetPreference });
+
+            return Ok(essentialSittersData);
         }
 
         // GET api/<PetSitterController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            IEnumerable<PetSitter> petSitter = _petSitterService.GetById(id).Select(p => p.ToApi());
-            return Ok(petSitter);
+            IEnumerable<PetSitter> sitterData = _petSitterService.GetById(id).Select(p => p.ToApi());
+            IEnumerable<object> essentialSitterData = sitterData.Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email, o.PetPreference });
+
+            return Ok(essentialSitterData);
         }
 
         // POST api/<PetSitterController>

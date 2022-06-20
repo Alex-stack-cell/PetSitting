@@ -22,7 +22,7 @@ namespace BLLPetSitting.Mappers
         /// <returns></returns>
         public static PetSitterBll ToBll(this PetSitterEntity Entity)
         {
-            PetSitterBll PetSitter = new PetSitterBll(Entity.ID, Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd, Entity.Score);
+            PetSitterBll PetSitter = new PetSitterBll(Entity.ID, Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd);
 
             PetSitter.PetPreference = Entity.PetPreference;
             return PetSitter;
@@ -43,7 +43,6 @@ namespace BLLPetSitting.Mappers
                 Email = Model.Email,
                 BirthDate = Model.BirthDate,
                 Passwd = Model.Passwd,
-                Score = Model.Score,
                 PetPreference = Model.PetPreference,
             };
             return PetSitter;

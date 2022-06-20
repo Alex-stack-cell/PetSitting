@@ -17,7 +17,7 @@ namespace BLLPetSitting.Mappers
         /// <returns></returns>
         public static OwnerBll ToBll(this OwnerEntity Entity)
         {
-            OwnerBll owner =  new OwnerBll(Entity.ID,Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd, Entity.Score);
+            OwnerBll owner =  new OwnerBll(Entity.ID,Entity.LastName, Entity.FirstName, Entity.Email, Entity.BirthDate, Entity.Passwd);
 
             return owner;
         }
@@ -36,7 +36,6 @@ namespace BLLPetSitting.Mappers
                 BirthDate = Model.BirthDate,
                 Email = Model.Email,                
                 Passwd = Model.Passwd,
-                Score = Model.Score,
             };
         }
     }

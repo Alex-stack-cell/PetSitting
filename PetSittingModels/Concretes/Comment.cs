@@ -38,6 +38,7 @@ namespace BLLPetSitting.Concretes
             //Validation
             ValidateTitle(title);
             ValidateComment(description, score);
+            ValidateScore();
             //ValidateCreatedAt(createdAt);
         }
 
@@ -83,5 +84,18 @@ namespace BLLPetSitting.Concretes
         //        throw new CustomException("La date de création du poste est invalide");
         //    }
         //}
+
+        /// <summary>
+        /// Évalue le score, cela doit être un nombre entier entre 0 et 5
+        /// </summary>
+        /// <exception cref="CustomException"></exception>
+        public void ValidateScore()
+        {
+            int? score = this.Score;
+            if (score < 0 || score > 5)
+            {
+                throw new CustomException("Le score doit être compris entre 0 et 5");
+            }
+        }
     }
 }

@@ -17,10 +17,14 @@ namespace DALPetSitting.Services
     public class CommentService : ICommentRepository
     {
         private string _cnnstring;
+        public CommentService(ConnectionString cnnstring)
+        {
+            _cnnstring = cnnstring.Value;
+        }
 
         private SqlConnection CreateConnection()
         {
-            return new SqlConnection(this._cnnstring);
+            return new SqlConnection(_cnnstring);
         }
         /// <summary>
         /// Ajouté un commentaire en base de données
@@ -34,7 +38,7 @@ namespace DALPetSitting.Services
                 using (SqlCommand cmd = sqlConnection.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "INSERT INTO Comment (ID_Prestation, ID_Owner, ID_PetSitter, Title, Description, CreatedAt, Score) VALUES (@ID_Prestation, @ID_Owner, @ID_PetSitter, @Title, @Description, @CreatedAt, @Score)";
+                    cmd.CommandText = "INSERT INTO Comment (ID_Prestation, ID_Owner, ID_PetSitter, Title, Description, CreatedAt, Score, IsOwner) VALUES (@ID_Prestation, @ID_Owner, @ID_PetSitter, @Title, @Description, @CreatedAt, @Score, @IsOwner)";
 
                     cmd.Parameters.AddRange(new[]
                         {
@@ -45,6 +49,7 @@ namespace DALPetSitting.Services
                             new SqlParameter("Description",type.Description),
                             new SqlParameter("CreatedAt",type.CreatedAt),
                             new SqlParameter("Score",type.Score),
+                            new SqlParameter("IsOwner",type.IsOwner)
                         });
 
                     sqlConnection.Open();
@@ -122,7 +127,7 @@ namespace DALPetSitting.Services
                                     Description = (string)reader["Description"],
                                     CreatedAt = (DateTime)reader["CreatedAt"],
                                     Score = (int)reader["Score"],
-                                    IsOwner = (bool)reader["isOwner"]
+                                    IsOwner = (bool)reader["IsOwner"]
                                 });
                             }
                             return list;

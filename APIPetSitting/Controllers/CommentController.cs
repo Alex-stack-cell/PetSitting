@@ -28,19 +28,19 @@ namespace APIPetSitting.Controllers
             return Ok(comments);
         }
         // GET: api/<CommentController>/5/scoreAsc
-        [HttpGet("scoreAsc")]
-        public IActionResult GetByScoreAsc()
+        [HttpGet("score/sort/{sort}")]
+        public IActionResult GetByScoreAsc(bool sort)
         {
-            IEnumerable<Comment> comments = _commentService.GetCommentByScoreAsc().Select(c => c.ToApi());
+            IEnumerable<Comment> comments;
+            if (sort)
+            {
+               comments = _commentService.GetCommentByScoreAsc().Select(c => c.ToApi());
+            } else
+            {
+                comments = _commentService.GetCommentByScoreDesc().Select(c => c.ToApi());
+            }
             return Ok(comments);
-        }
-        // GET: api/<CommentController>/5/scoreDesc
-        [HttpGet("scoreDesc")]
-        public IActionResult GetByScoreDesc()
-        {
-            IEnumerable<Comment> comments = _commentService.GetCommentByScoreDesc().Select(c => c.ToApi());
-            return Ok(comments);
-        }
+        }    
         // GET api/<CommentController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)

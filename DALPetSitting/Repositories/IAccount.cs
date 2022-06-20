@@ -17,5 +17,6 @@ namespace DALPetSitting.Repositories
         public Account GetOwnerCredentials(string credentialToVerify);
         public Account GetPetSitterCredentials(string credentialToVerify);
         public bool isOwnerPasswordValid(string ownerEmail, string passwdToVerify);
+        public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify);
     }
 }

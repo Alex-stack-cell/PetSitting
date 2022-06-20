@@ -42,19 +42,5 @@ namespace APIPetSitting.CredentialsHelpers
             bool exist = (email!=null) ? true : false;
             return exist;
         }
-
-        //public Account GetOwnerCredential(string credentialToVerify)
-        //{
-        //    Account ownerCredential = _accountService.GetOwnerCredentials(credentialToVerify).ToApi();
-
-        //    return ownerCredential;
-        //}
-
-        //public Account GetPetSitterCredential(string credentialToVerify)
-        //{
-        //    Account petSitterCredential = _accountService.GetPetSitterCredentials(credentialToVerify).ToApi();
-
-        //    return petSitterCredential;
-        //}
     }
 }

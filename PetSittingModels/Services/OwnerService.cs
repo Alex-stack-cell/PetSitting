@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OwnerDalService = DALPetSitting.Services.OwnerService;
 using BLLPetSitting.Mappers;
+using BLLPetSitting.Abstracts;
 
 namespace BLLPetSitting.Services
 {
@@ -56,6 +57,11 @@ namespace BLLPetSitting.Services
         {
             IEnumerable <Owner> owner = _OwnerDalService.GetById(id).Select(o=>o.ToBll());
             return owner;
+        }
+        public DashboardOwner GetDashboard(int id)
+        {
+            DashboardOwner dashboard = _OwnerDalService.GetDashboard(id).ToBll();
+            return dashboard;
         }
         /// <summary>
         /// Met à jour les info d'un propriétaire sur base de son identifiant

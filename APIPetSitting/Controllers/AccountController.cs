@@ -1,8 +1,6 @@
 ﻿using APIPetSitting.Mappers;
 using APIPetSitting.Models;
 using BLLPetSitting.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -42,42 +40,48 @@ namespace APIPetSitting.Controllers
             VerifyPasswd verifyPasswd = new VerifyPasswd(_accountService);
             GetCredentials getCredentials = new GetCredentials(_accountService);
 
-            bool ownerExist = verifyEmail.emailOwnerExist(userLogins.UserEmail);
-            bool ownerPasswdValid = verifyPasswd.isOwnerPasswordValid(userLogins.UserEmail, userLogins.Password);
+            bool ownerExist = verifyEmail.emailOwnerExist(userLogins.UserEmail);           
 
             UserTokens Token = new UserTokens();
 
             try
             {
-                //vérifie si le compte utilisateur est : propriétaire et mdp fournit est Ok
-                if (ownerExist && ownerPasswdValid)
+                //vérifie si le compte utilisateur est : propriétaire 
+                if (ownerExist)
                 {
-                    // Si le compte existe et mdp correct un token est généré
-                    Account ownerCredential = getCredentials.GetOwnerCredential(userLogins.UserEmail);
-
-                    Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
+                    bool ownerPasswdValid = verifyPasswd.isOwnerPasswordValid(userLogins.UserEmail, userLogins.Password);
+                    if (ownerPasswdValid) // vérifie si le mdp fournit est ok
                     {
-                        Id = (int)ownerCredential.ID,
-                        Email = ownerCredential.Email,
-                        FirstName = ownerCredential.FirstName,
-                        isOwner = true
-                    }, _jwtSettings);
-
-                }
-                else //Sinon check si le compte appartient à un petSitter
-                {
-                    bool petSitterExist = verifyEmail.emailPetSitterExist(userLogins.UserEmail);
-                    if (petSitterExist)
-                    {
-                        Account sitterCredential = getCredentials.GetPetSitterCredential(userLogins.UserEmail);
+                        // Si le compte existe et mdp correct un token est généré
+                        Account ownerCredential = getCredentials.GetOwnerCredential(userLogins.UserEmail);
 
                         Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
                         {
-                            Id = (int)sitterCredential.ID,
-                            Email = sitterCredential.Email,
-                            FirstName = sitterCredential.FirstName,
+                            Id = (int)ownerCredential.ID,
+                            Email = ownerCredential.Email,
+                            FirstName = ownerCredential.FirstName,
                             isOwner = true
                         }, _jwtSettings);
+                    }
+                }
+                else //Sinon check si le compte appartient à un petSitter
+                {
+                    bool petSitterExist = verifyEmail.emailPetSitterExist(userLogins.UserEmail);                  
+                    if (petSitterExist)
+                    {
+                        bool petSitterPasswdValid = verifyPasswd.isPetSitterPasswordValid(userLogins.UserEmail, userLogins.Password);
+                        if (petSitterPasswdValid)// vérifie si le mdp fournit est ok
+                        {
+                            Account sitterCredential = getCredentials.GetPetSitterCredential(userLogins.UserEmail);
+
+                            Token = jwt.JwtHelpers.GenTokenkey(new UserTokens()
+                            {
+                                Id = (int)sitterCredential.ID,
+                                Email = sitterCredential.Email,
+                                FirstName = sitterCredential.FirstName,
+                                isOwner = true
+                            }, _jwtSettings);
+                        }                       
                     }
                     else // A contrario l'utilisateur n'existe pas dans la db
                     {

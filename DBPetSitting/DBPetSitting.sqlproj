@@ -65,5 +65,10 @@
     <Build Include="PetSitter.sql" />
     <Build Include="Prestation.sql" />
     <Build Include="Comment.sql" />
+    <Build Include="V_Owner.sql" />
+    <Build Include="V_PetSitter.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DBPetSitting.refactorlog" />
   </ItemGroup>
 </Project>

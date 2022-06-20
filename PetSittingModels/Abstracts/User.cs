@@ -46,7 +46,7 @@ namespace BLLPetSitting.Abstracts
         public string Email { get { return _email; } set { this._email = value; } }
         public DateTime BirthDate { get { return _birthDate; }set { this._birthDate = value; } }
         public string Passwd { get { return _passwd; } set { this._passwd = value; } }
-        public int? Score { get { return _score; } set{ this._score = value; } }
+        //public int? Score { get { return _score; } set{ this._score = value; } }
 
         /// <summary>
         /// Constructeur permettant d'initialiser une personne
@@ -55,7 +55,7 @@ namespace BLLPetSitting.Abstracts
         /// <param name="firstName"></param>
         /// <param name="email"></param>
         /// <param name="birthDate"></param>
-        public User(int? id, string lastName, string firstName, string email,DateTime birthDate, string passwd, int? score)
+        public User(int? id, string lastName, string firstName, string email,DateTime birthDate, string passwd)
         {
             this.Id = id;
             this._lastName = lastName;
@@ -63,7 +63,6 @@ namespace BLLPetSitting.Abstracts
             this._email = email;
             this._birthDate = birthDate;
             this._passwd = passwd;
-            this._score = score;
 
             // validation
             ValidateAge();
@@ -73,7 +72,6 @@ namespace BLLPetSitting.Abstracts
             {
                 ValidatePassword(passwd);
             }
-            ValidateScore();
         }
 
         /// <summary>
@@ -139,12 +137,6 @@ namespace BLLPetSitting.Abstracts
             Regex verifyLength = new Regex(@".{8,15}");
             // le mot de passe doit contenir au moins un symbol
             Regex verifySymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-
-            //if (string.IsNullOrWhiteSpace(passwd) && passwd != "")
-            //{
-            //    throw new CustomException($"Le mot de passe ne peut pas être vide pour { this.FirstName }");
-            //}
-            //else 
             
             if (!verifyNumber.IsMatch(passwd))
             {
@@ -166,19 +158,6 @@ namespace BLLPetSitting.Abstracts
             {
                 throw new CustomException($"Le mot de passe doit contenir au moins un caractère spéciale pour { this.FirstName }");
             }
-        }
-
-        /// <summary>
-        /// Évalue le score, cela doit être un nombre entier entre 0 et 5
-        /// </summary>
-        /// <exception cref="CustomException"></exception>
-        public void ValidateScore()
-        {
-            int? score = this.Score;
-            if (score < 0 || score>5)
-            {
-                throw new CustomException("Le score doit être compris entre 0 et 5");
-            }
-        }
+        }     
     }
 }

@@ -23,7 +23,6 @@ namespace APIPetSitting.Mappers
                 BirthDate = Bll.BirthDate,
                 Email = Bll.Email,
                 Passwd = Bll.Passwd,
-                Score = Bll.Score,
                 PetPreference = Bll.PetPreference
             };
         }
@@ -34,7 +33,7 @@ namespace APIPetSitting.Mappers
         /// <returns></returns>
         public static PetSitterBLL ToBll(this PetSitterApi Api)
         {
-            PetSitterBLL petSitter = new PetSitterBLL(Api.ID, Api.LastName, Api.FirstName, Api.Email, Api.BirthDate,Api.Passwd, Api.Score);
+            PetSitterBLL petSitter = new PetSitterBLL(Api.ID, Api.LastName, Api.FirstName, Api.Email, Api.BirthDate,Api.Passwd);
 
             petSitter.PetPreference = (string)Api.PetPreference;
 

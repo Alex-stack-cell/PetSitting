@@ -1,13 +1,8 @@
 ﻿using DALPetSitting.Entities;
 using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DALPetSitting.Helpers;
 
 namespace DALPetSitting.Services
@@ -162,6 +157,66 @@ namespace DALPetSitting.Services
                 throw ex;
             }
 
+        }
+        /// <summary>
+        /// Authentifie le mdp du petSitter
+        /// </summary>
+        /// <param name="sitterEmail"></param>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
+        public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify)
+        {            
+            try
+            {
+                Account accountToVerify = new Account();
+                byte[] salt;
+                string hashedPasswordToVerify;
+                string expectedHashedPassword;
+                bool isPasswordValid = false;
+
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {                                          
+                        SqlParameter PEmail = new SqlParameter();
+                        PEmail.ParameterName = "Email";
+                        PEmail.IsNullable = false;
+                        PEmail.Value = sitterEmail;
+
+                        cmd.AddParameters(PEmail);
+
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT HashPasswd, Salt FROM PetSitter WHERE Email = @Email";
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                accountToVerify = new Account()
+                                {
+                                    HashPasswd = (string)reader["HashPasswd"],
+                                    Salt = (byte[])reader["Salt"]
+                                };
+                            }
+                            expectedHashedPassword = accountToVerify.HashPasswd;
+                            salt = accountToVerify.Salt;
+                            hashedPasswordToVerify = Crypto.HashPassword(salt,passwdToVerify);
+
+                            if(expectedHashedPassword == hashedPasswordToVerify)
+                            {
+                                isPasswordValid = true;
+                            }
+
+                            return isPasswordValid;
+                        }
+                    }
+                }                
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
         }
         /// <summary>
         /// Récupère les info du proprio. nécessaire pour les claims (Token)

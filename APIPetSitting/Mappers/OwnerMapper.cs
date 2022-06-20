@@ -22,8 +22,7 @@ namespace APIPetSitting.Mappers
                 FirstName = Bll.FirstName,
                 Email = Bll.Email,
                 BirthDate = Bll.BirthDate,
-                Passwd = Bll.Passwd,
-                Score = Bll.Score,
+                Passwd = Bll.Passwd,                
             };
         }
         /// <summary>
@@ -33,7 +32,7 @@ namespace APIPetSitting.Mappers
         /// <returns></returns>
         public static OwnerBLL ToBll(this OwnerApi Model)
         {
-            OwnerBLL owner =  new OwnerBLL(Model.ID,Model.LastName,Model.FirstName,Model.Email,Model.BirthDate,Model.Passwd,Model.Score);
+            OwnerBLL owner =  new OwnerBLL(Model.ID,Model.LastName,Model.FirstName,Model.Email,Model.BirthDate,Model.Passwd);
 
             return owner;
         }
