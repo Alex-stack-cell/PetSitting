@@ -1,7 +1,7 @@
+
 using DALPetSitting.Infra;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +22,9 @@ using AccountDalService = DALPetSitting.Services.AccountService;
 using AccountBllService = BLLPetSitting.Services.AccountService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using APIPetSitting.Models;
 using System;
+using APIPetSitting.Models.Concretes.Auth;
+using APIPetSitting.Requirements;
 
 namespace APIPetSitting
 {
@@ -92,6 +92,12 @@ namespace APIPetSitting
                     ClockSkew = TimeSpan.FromDays(1),
                 };
             });
+
+            // Non fini 
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Granted", policy => policy.Requirements.Add(new ActionGranted()));
+            //});
           
             services.AddControllers();
 

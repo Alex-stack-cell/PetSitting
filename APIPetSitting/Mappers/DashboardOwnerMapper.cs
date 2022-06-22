@@ -1,9 +1,9 @@
-﻿using DashboardAPI = APIPetSitting.Models.DashboardOwner;
-using DashboardBll = BLLPetSitting.Concretes.DashboardOwner;
+﻿using DashboardAPI = APIPetSitting.Models.Concretes.Dashboards.DashboardOwner;
+using DashboardBll = BLLPetSitting.Concretes.Dashboards.DashboardOwner;
 
 namespace APIPetSitting.Mappers
 {
-    public static class DashboardMapper
+    public static class DashboardOwnerMapper
     {
         public static DashboardAPI ToApi(this DashboardBll Bll)
         {

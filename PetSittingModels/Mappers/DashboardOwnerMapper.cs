@@ -1,5 +1,5 @@
-﻿using DashboardOwnerBll = BLLPetSitting.Concretes.DashboardOwner;
-using DashboardOwnerDal = DALPetSitting.Entities.DashboardOwner;
+﻿using DashboardOwnerBll = BLLPetSitting.Concretes.Dashboards.DashboardOwner;
+using DashboardOwnerDal = DALPetSitting.Entities.Dashboards.DashboardOwner;
 
 namespace BLLPetSitting.Mappers
 {

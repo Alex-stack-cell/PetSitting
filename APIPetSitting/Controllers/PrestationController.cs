@@ -1,5 +1,5 @@
 ﻿using APIPetSitting.Mappers;
-using APIPetSitting.Models;
+using APIPetSitting.Models.Concretes;
 using BLLPetSitting.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

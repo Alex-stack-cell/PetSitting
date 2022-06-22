@@ -1,5 +1,7 @@
-﻿using APIPetSitting.Mappers;
-using APIPetSitting.Models;
+﻿using APIPetSitting.Filters;
+using APIPetSitting.Mappers;
+using APIPetSitting.Models.Concretes.Dashboards;
+using APIPetSitting.Models.Concretes.Users;
 using BLLPetSitting.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ using System.Text;
 
 namespace APIPetSitting.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PetSitterController : ControllerBase
@@ -25,8 +28,9 @@ namespace APIPetSitting.Controllers
             _petSitterService = petSitterService;
             //_config = config;
         }
-      
+
         // GET: api/<PetSitterController>
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get()
         {
@@ -37,6 +41,7 @@ namespace APIPetSitting.Controllers
         }
 
         // GET api/<PetSitterController>/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -45,8 +50,18 @@ namespace APIPetSitting.Controllers
 
             return Ok(essentialSitterData);
         }
+        [AllowAnonymous]
+        [HttpGet("dashboard/{id}")]
+        public IActionResult GetDashboard(int id)
+        {
+            DashboardPetSitter dashboard = _petSitterService.GetDashboard(id).ToApi();
+
+            return Ok(dashboard);
+        }
+
 
         // POST api/<PetSitterController>
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] PetSitter petSitter)
         {
@@ -65,7 +80,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<PetSitterController>/5
-        [Authorize]
+        [VerifyId]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] PetSitter petSitter)
         {
@@ -78,7 +93,7 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<PetSitterController>/5
-        [Authorize]
+        [VerifyId]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

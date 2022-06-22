@@ -1,4 +1,4 @@
-﻿using DALPetSitting.Entities;
+﻿using DALPetSitting.Entities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;

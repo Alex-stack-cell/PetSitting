@@ -1,5 +1,5 @@
-﻿using PetSitterBLL = BLLPetSitting.Concretes.PetSitter;
-using PetSitterApi = APIPetSitting.Models.PetSitter;
+﻿using PetSitterBLL = BLLPetSitting.Concretes.Users.PetSitter;
+using PetSitterApi = APIPetSitting.Models.Concretes.Users.PetSitter;
 
 namespace APIPetSitting.Mappers
 {

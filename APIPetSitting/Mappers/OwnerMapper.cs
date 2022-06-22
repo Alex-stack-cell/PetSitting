@@ -1,5 +1,5 @@
-﻿using OwnerBLL = BLLPetSitting.Concretes.Owner;
-using OwnerApi = APIPetSitting.Models.Owner;
+﻿using OwnerBLL = BLLPetSitting.Concretes.Users.Owner;
+using OwnerApi = APIPetSitting.Models.Concretes.Users.Owner;
 
 namespace APIPetSitting.Mappers
 {

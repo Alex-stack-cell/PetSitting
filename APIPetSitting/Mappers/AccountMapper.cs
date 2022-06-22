@@ -1,5 +1,5 @@
-﻿using AccountApi = APIPetSitting.Models.Account;
-using AccountBll = BLLPetSitting.Concretes.Account;
+﻿using AccountApi = APIPetSitting.Models.Concretes.Auth.Account;
+using AccountBll = BLLPetSitting.Concretes.Auth.Account;
 
 namespace APIPetSitting.Mappers
 {

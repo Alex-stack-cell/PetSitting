@@ -1,6 +1,4 @@
-﻿
-
-namespace BLLPetSitting.Concretes
+﻿namespace BLLPetSitting.Concretes.Auth
 {
     /// <summary>
     /// Information permettant de valier l'existance ou non du compte

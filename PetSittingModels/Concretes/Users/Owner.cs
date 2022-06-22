@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLLPetSitting.Concretes
+namespace BLLPetSitting.Concretes.Users
 {
     /// <summary>
     /// Propriétaire d'animal de compagnie issu de la BLL    
@@ -14,7 +14,7 @@ namespace BLLPetSitting.Concretes
     {
         public Owner(int? id, string lastName, string firstName, string email, DateTime birthDate, string passwd) : base(id, lastName, firstName, email, birthDate, passwd)
         {
-            
+
         }
     }
 }

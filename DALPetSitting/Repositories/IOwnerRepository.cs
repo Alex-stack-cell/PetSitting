@@ -1,6 +1,6 @@
 ﻿using DALPetSitting.Repository;
 using System.Collections.Generic;
-using DALPetSitting.Entities;
+using DALPetSitting.Entities.Users;
 
 namespace DALPetSitting.Repositories
 {

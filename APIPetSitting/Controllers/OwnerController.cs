@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using BLLPetSitting.Services;
-using APIPetSitting.Models;
 using System.Linq;
 using APIPetSitting.Mappers;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using APIPetSitting.Models.Concretes.Users;
+using APIPetSitting.Models.Concretes.Dashboards;
+using APIPetSitting.Filters;
+using APIPetSitting.Extensions;
 
 namespace APIPetSitting.Controllers
 {
@@ -42,6 +45,7 @@ namespace APIPetSitting.Controllers
             IEnumerable<Owner> allOwnerData = _ownerService.GetById(id).Select(o=>o.ToApi());
             return Ok(allOwnerData);
         }
+        [AllowAnonymous]
         [HttpGet("dashboard/{id}")]
         public IActionResult GetDashboard(int id)
         {
@@ -70,6 +74,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<OwnerController>/5
+        [VerifyId]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Owner owner)
         {
@@ -82,12 +87,13 @@ namespace APIPetSitting.Controllers
         }
 
         // DELETE api/<OwnerController>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        //[Authorize(Policy = "Granted")]
+        [HttpDelete()]
+        public IActionResult Delete()
         {
-            if(_ownerService.Delete(id)!=0)
-            {
-                int rowAffected = _ownerService.Delete(id);
+            if(_ownerService.Delete(User.GetId())!=0)
+            {                
+                int rowAffected = _ownerService.Delete(User.GetId());
                 return Ok(rowAffected);
             }
             return BadRequest();

@@ -1,4 +1,4 @@
-﻿using CommentApi = APIPetSitting.Models.Comment;
+﻿using CommentApi = APIPetSitting.Models.Concretes.Comment;
 using CommentBll = BLLPetSitting.Concretes.Comment;
 
 namespace APIPetSitting.Mappers

@@ -1,4 +1,4 @@
-﻿using AdvertisementApi = APIPetSitting.Models.Advertisement;
+﻿using AdvertisementApi = APIPetSitting.Models.Concretes.Advertisement;
 using AdvertisementBll = BLLPetSitting.Concretes.Advertisement;
 
 namespace APIPetSitting.Mappers

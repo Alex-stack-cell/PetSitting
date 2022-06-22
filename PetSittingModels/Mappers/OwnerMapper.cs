@@ -1,5 +1,5 @@
-﻿using OwnerBll = BLLPetSitting.Concretes.Owner;
-using OwnerEntity = DALPetSitting.Entities.Owner;
+﻿using OwnerBll = BLLPetSitting.Concretes.Users.Owner;
+using OwnerEntity = DALPetSitting.Entities.Users.Owner;
 
 namespace BLLPetSitting.Mappers
 {

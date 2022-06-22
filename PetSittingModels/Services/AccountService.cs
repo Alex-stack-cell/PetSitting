@@ -1,4 +1,4 @@
-﻿using BLLPetSitting.Concretes;
+﻿using BLLPetSitting.Concretes.Auth;
 using BLLPetSitting.Mappers;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace BLLPetSitting.Services
 
         public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify)
         {
-            return _accountService.isOwnerPasswordValid(sitterEmail, passwdToVerify);
+            return _accountService.isPetSitterPasswordValid(sitterEmail, passwdToVerify);
         }
     }
 }

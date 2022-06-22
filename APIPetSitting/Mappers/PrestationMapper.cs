@@ -1,4 +1,4 @@
-﻿using PrestationApi = APIPetSitting.Models.Prestation;
+﻿using PrestationApi = APIPetSitting.Models.Concretes.Prestation;
 using PrestationBll = BLLPetSitting.Concretes.Prestation;
 
 namespace APIPetSitting.Mappers

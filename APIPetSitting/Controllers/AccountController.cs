@@ -1,13 +1,13 @@
 ﻿using APIPetSitting.Mappers;
-using APIPetSitting.Models;
 using BLLPetSitting.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using jwt =  APIPetSitting.JwtHelpers;
+using jwt = APIPetSitting.JwtHelpers;
 using APIPetSitting.CredentialsHelpers;
 using Microsoft.Extensions.Logging;
+using APIPetSitting.Models.Concretes.Auth;
 
 namespace APIPetSitting.Controllers
 {

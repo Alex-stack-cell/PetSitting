@@ -1,5 +1,5 @@
-﻿using DashboardPetSitterBll = BLLPetSitting.Concretes.DashboardPetSitter;
-using DashboardPetSitterDal = DALPetSitting.Entities.DashboardPetSitter;
+﻿using DashboardPetSitterBll = BLLPetSitting.Concretes.Dashboards.DashboardPetSitter;
+using DashboardPetSitterDal = DALPetSitting.Entities.Dashboards.DashboardPetSitter;
 
 namespace BLLPetSitting.Mappers
 {

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIPetSitting.Models
+namespace APIPetSitting.Models.Abstracts
 {
     /// <summary>
-    /// Propriétaire d'un animal de compagnie issus de l'API
+    /// Modèle abstrait regroupant les propriétés communes des utilisateurs
     /// </summary>
-    public class Owner
+    public abstract class User
     {
-        public int? ID{ get; set; }
-        [Required]
-        public string LastName{ get; set; }
+        public int? ID { get; set; }
+        
+        public string LastName { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

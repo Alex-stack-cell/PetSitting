@@ -1,5 +1,4 @@
-﻿using DALPetSitting.Entities;
-using DALPetSitting.Infra;
+﻿using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
 using System;
 using System.Collections.Generic;
@@ -7,13 +6,15 @@ using System.Data;
 using System.Data.SqlClient;
 using DALPetSitting.Helpers;
 using DALPetSitting.Abstracts;
+using DALPetSitting.Entities.Users;
+using DALPetSitting.Entities.Dashboards;
 
 namespace DALPetSitting.Services
 {
     /// <summary>
     /// Opérations DML et DDL pour l'entité Owner en BDD 
     /// </summary>
-    public class OwnerService : IOwnerRepository
+    public class OwnerService : IOwnerRepository, IDashboard<DashboardOwner>
     {
         private string _cnnstring;
         public OwnerService(ConnectionString cnstr)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIPetSitting.Models
+namespace APIPetSitting.Models.Concretes
 {
     /// <summary>
     /// Prestation côté API

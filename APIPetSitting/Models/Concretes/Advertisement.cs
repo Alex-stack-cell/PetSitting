@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIPetSitting.Models
+namespace APIPetSitting.Models.Concretes
 {
     /// <summary>
     /// Entité Advertissement côté API
@@ -17,12 +17,12 @@ namespace APIPetSitting.Models
         [Required]
         public string Description { get; set; }
         [Required]
-        public string Region { get; set; }        
+        public string Region { get; set; }
         public string City { get; set; }
         [Required]
         public DateTime DateStart { get; set; }
         [Required]
-        public DateTime DateEnd { get; set; }        
+        public DateTime DateEnd { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

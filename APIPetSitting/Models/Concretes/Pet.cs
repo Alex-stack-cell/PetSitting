@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIPetSitting.Models
+namespace APIPetSitting.Models.Concretes
 {
     public class Pet
     {
@@ -10,7 +10,7 @@ namespace APIPetSitting.Models
         [Required]
         public string NickName { get; set; }
         [Required]
-        public string Type { get; set; }        
+        public string Type { get; set; }
         public string Breed { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }

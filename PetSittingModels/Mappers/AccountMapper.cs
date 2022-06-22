@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AccountBll = BLLPetSitting.Concretes.Account;
-using AccountEntity = DALPetSitting.Entities.Account;
+using AccountBll = BLLPetSitting.Concretes.Auth.Account;
+using AccountEntity = DALPetSitting.Entities.Auth.Account;
 
 namespace BLLPetSitting.Mappers
 {

@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLLPetSitting.Concretes
+namespace BLLPetSitting.Concretes.Dashboards
 {
-    public class DashboardOwner : Dashboard
+    public class DashboardPetSitter : Dashboard
     {
+        public string PetPreference { get; set; }
     }
 }

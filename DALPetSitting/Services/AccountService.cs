@@ -1,9 +1,9 @@
-﻿using DALPetSitting.Entities;
-using DALPetSitting.Infra;
+﻿using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
 using System.Data;
 using System.Data.SqlClient;
 using DALPetSitting.Helpers;
+using DALPetSitting.Entities.Auth;
 
 namespace DALPetSitting.Services
 {
@@ -187,6 +187,7 @@ namespace DALPetSitting.Services
 
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = "SELECT HashPasswd, Salt FROM PetSitter WHERE Email = @Email";
+                        sqlConnection.Open();
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {

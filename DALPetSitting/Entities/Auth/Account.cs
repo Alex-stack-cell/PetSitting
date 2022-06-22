@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DALPetSitting.Entities
+namespace DALPetSitting.Entities.Auth
 {
     /// <summary>
     /// Information permettant de valier l'existance ou non du compte

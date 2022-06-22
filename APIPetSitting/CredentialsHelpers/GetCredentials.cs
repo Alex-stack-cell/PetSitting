@@ -1,5 +1,5 @@
 ﻿using APIPetSitting.Mappers;
-using APIPetSitting.Models;
+using APIPetSitting.Models.Concretes.Auth;
 using BLLPetSitting.Services;
 
 namespace APIPetSitting.CredentialsHelpers

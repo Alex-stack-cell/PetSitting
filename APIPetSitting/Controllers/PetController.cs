@@ -1,11 +1,11 @@
 ﻿using APIPetSitting.Mappers;
-using APIPetSitting.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using BLLPetSitting.Services;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using APIPetSitting.Models.Concretes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

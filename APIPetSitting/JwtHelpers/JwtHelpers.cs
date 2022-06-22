@@ -1,10 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using APIPetSitting.Models;
 using System.Collections.Generic;
 using System;
 using System.Text;
+using APIPetSitting.Models.Concretes.Auth;
 
 namespace APIPetSitting.JwtHelpers
 {
@@ -23,11 +23,11 @@ namespace APIPetSitting.JwtHelpers
         public static IEnumerable<Claim> GetClaims(this UserTokens userAccounts)
         {
             IEnumerable<Claim> claims = new Claim[] {
-                    new Claim("Id", userAccounts.Id.ToString()),
+                    new Claim("Id", userAccounts.Id.ToString(),ClaimValueTypes.Integer64),
                     new Claim("Username", userAccounts.FirstName),
-                    new Claim("Owner", userAccounts.isOwner.ToString()),
+                    new Claim("Owner", userAccounts.isOwner.ToString(), ClaimValueTypes.Boolean),
                     //new Claim(ClaimTypes.Email, userAccounts.Email),
-                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))//token de durée d'1 jour - mode dévelopement
+                    new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString(),ClaimValueTypes.DateTime)//token de durée d'1 jour - mode dévelopement
             };
             return claims;
         }

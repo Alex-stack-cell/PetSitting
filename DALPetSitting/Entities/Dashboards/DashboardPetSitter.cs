@@ -1,9 +1,9 @@
 ﻿using DALPetSitting.Abstracts;
 
-namespace DALPetSitting.Entities
+namespace DALPetSitting.Entities.Dashboards
 {
     public class DashboardPetSitter : Dashboard
     {
-        public string PetPreference{ get; set; }
+        public string PetPreference { get; set; }
     }
 }

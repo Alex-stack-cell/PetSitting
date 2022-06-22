@@ -1,7 +1,7 @@
-﻿namespace APIPetSitting.Models
+﻿namespace APIPetSitting.Models.Concretes.Auth
 {
     /// <summary>
-    /// Information permettant de valier l'existance ou non du compte
+    /// Information permettant de valider l'existance ou non du compte
     /// </summary>
     public class Account
     {

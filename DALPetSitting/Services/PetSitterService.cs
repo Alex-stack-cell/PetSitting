@@ -1,5 +1,6 @@
 ﻿using DALPetSitting.Abstracts;
-using DALPetSitting.Entities;
+using DALPetSitting.Entities.Dashboards;
+using DALPetSitting.Entities.Users;
 using DALPetSitting.Helpers;
 using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
@@ -13,7 +14,7 @@ namespace DALPetSitting.Services
     /// <summary>
     /// Opérations DML et DDL pour l'entité PetSitter en BDD 
     /// </summary>
-    public class PetSitterService : IPetSitterRepository
+    public class PetSitterService : IPetSitterRepository, IDashboard<DashboardPetSitter>
     {
         private string _cnnstring;
         public PetSitterService(ConnectionString cnstr)
@@ -286,16 +287,19 @@ namespace DALPetSitting.Services
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            petSitterDashboard = new DashboardPetSitter()
+                            while (reader.Read())
                             {
-                                ID = (int)reader["Id"],
-                                LastName = (string)reader["LastName"],
-                                FirstName = (string)reader["FirstName"],
-                                BirthDate = (DateTime)reader["BirthDate"],
-                                Email = (string)reader["Email"],
-                                PetPreference = (string)reader["PetPreference"],
-                                Score = reader["Score"] == DBNull.Value ? null : (float)reader["Score"]
-                            };
+                                petSitterDashboard = new DashboardPetSitter()
+                                {
+                                    ID = (int)reader["Id"],
+                                    LastName = (string)reader["LastName"],
+                                    FirstName = (string)reader["FirstName"],
+                                    BirthDate = (DateTime)reader["BirthDate"],
+                                    Email = (string)reader["Email"],
+                                    PetPreference = (string)reader["PetPreference"],
+                                    Score = reader["Score"] == DBNull.Value ? null : (float)reader["Score"]
+                                };
+                            }                         
                         }
                         return petSitterDashboard;
                     }

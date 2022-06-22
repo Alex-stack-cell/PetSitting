@@ -67,7 +67,7 @@ namespace BLLPetSitting.Abstracts
             // validation
             ValidateAge();
             ValidateName(firstName, lastName);
-            // validation du mdp seulement si l'opération est diff. du getAll/getById 
+            // validation du mdp seulement si c'est une opération d'écriture  
             if (!string.IsNullOrWhiteSpace(passwd) && passwd != "")
             {
                 ValidatePassword(passwd);

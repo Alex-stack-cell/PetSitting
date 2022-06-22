@@ -17,7 +17,7 @@ namespace APIPetSitting.CredentialsHelpers
 
         public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify)
         {
-            return _accountService.isOwnerPasswordValid(sitterEmail, passwdToVerify);
+            return _accountService.isPetSitterPasswordValid(sitterEmail, passwdToVerify);
         }
     }
 }
