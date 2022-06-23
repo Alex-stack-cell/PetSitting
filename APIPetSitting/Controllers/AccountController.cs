@@ -79,7 +79,7 @@ namespace APIPetSitting.Controllers
                                 Id = (int)sitterCredential.ID,
                                 Email = sitterCredential.Email,
                                 FirstName = sitterCredential.FirstName,
-                                isOwner = true
+                                isOwner = false
                             }, _jwtSettings);
                         }                       
                     }

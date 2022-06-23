@@ -6,7 +6,8 @@ using BLLPetSitting.Mappers;
 using BLLPetSitting.Abstracts;
 using BLLPetSitting.Concretes.Users;
 using BLLPetSitting.Concretes.Dashboards;
-
+using BLLPetSitting.Concretes.Users.Updates;
+//using UpdateOwner = BLLPetSitting.Concretes.Users.Updates.UpdateOwnerInfo;
 namespace BLLPetSitting.Services
 {
     /// <summary>
@@ -72,6 +73,11 @@ namespace BLLPetSitting.Services
         public int Update(Owner owner)
         {
             return _OwnerDalService.Update(owner.ToDal());
+        }
+
+        public int UpdateInfo(UpdateOwnerInfo owner)
+        {
+            return _OwnerDalService.UpdateOwnerInfo(owner.toDal());
         }
     }
 }

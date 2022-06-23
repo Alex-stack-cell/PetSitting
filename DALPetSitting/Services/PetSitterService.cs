@@ -194,8 +194,6 @@ namespace DALPetSitting.Services
                                     FirstName = (string)reader["FirstName"],
                                     BirthDate = (DateTime)reader["BirthDate"],
                                     Email = (string)reader["Email"],
-                                    Passwd = (string)reader["Passwd"],
-                                    //Score = reader["Score"] as int?,
                                     PetPreference = reader["PetPreference"] == DBNull.Value ? null : (string)reader["PetPreference"]
                                 });
                             }

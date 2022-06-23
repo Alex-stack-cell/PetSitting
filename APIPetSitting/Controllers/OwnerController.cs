@@ -9,6 +9,7 @@ using APIPetSitting.Models.Concretes.Users;
 using APIPetSitting.Models.Concretes.Dashboards;
 using APIPetSitting.Filters;
 using APIPetSitting.Extensions;
+using APIPetSitting.Models.Concretes.Users.Updates;
 
 namespace APIPetSitting.Controllers
 {
@@ -34,7 +35,9 @@ namespace APIPetSitting.Controllers
         public IActionResult Get()
         {
             IEnumerable<Owner> allOwnersData = _ownerService.GetAll().Select(o => o.ToApi());
-            return Ok(allOwnersData);
+            IEnumerable<object> essentialData = allOwnersData.
+                Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email });
+            return Ok(essentialData);
         }
 
         // GET api/<OwnerController>/5
@@ -43,7 +46,9 @@ namespace APIPetSitting.Controllers
         public IActionResult Get(int id)
         {
             IEnumerable<Owner> allOwnerData = _ownerService.GetById(id).Select(o=>o.ToApi());
-            return Ok(allOwnerData);
+            IEnumerable<object> essentialData = allOwnerData.
+                Select(o => new { o.ID, o.LastName, o.FirstName, o.BirthDate, o.Email });
+            return Ok(essentialData);
         }
         [AllowAnonymous]
         [HttpGet("dashboard/{id}")]
@@ -81,6 +86,18 @@ namespace APIPetSitting.Controllers
             if (_ownerService.Update(owner.ToBll())!=0)
             {
                 int rowAffected = _ownerService.Update(owner.ToBll());
+                return Ok(rowAffected);
+            }
+            return BadRequest();
+        }
+        [VerifyId]
+        [HttpPut("update/{id}")]
+        public IActionResult Put([FromBody] UpdateOwnerInfo owner)
+        {
+            
+            if (_ownerService.UpdateInfo(owner.ToBll()) != 0)
+            {
+                int rowAffected = _ownerService.UpdateInfo(owner.ToBll());
                 return Ok(rowAffected);
             }
             return BadRequest();
