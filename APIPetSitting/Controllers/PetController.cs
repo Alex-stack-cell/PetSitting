@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using APIPetSitting.Models.Concretes;
+using APIPetSitting.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -38,7 +39,13 @@ namespace APIPetSitting.Controllers
             IEnumerable<Pet> pet = _petService.GetById(id).Select(p => p.ToApi());
             return Ok(pet);
         }
-
+        [VerifyId]
+        [HttpGet("owner={id}")]
+        public IActionResult GetByOwner(int id)
+        {
+            IEnumerable<Pet> pet = _petService.GetByOwner(id).Select(p => p.ToApi());
+            return Ok(pet);
+        }
         // POST api/<PetController>
         [AllowAnonymous]
         [HttpPost]

@@ -175,6 +175,7 @@ namespace DALPetSitting.Services
                                     ID = (int)reader["ID"],
                                     ID_Owner = (int)reader["ID_Owner"],
                                     NickName = (string)reader["NickName"],
+                                    Type = (string)reader["Type"],
                                     Breed = (string)reader["Breed"],
                                     BirthDate = (DateTime)reader["BirthDate"]
                                 });
