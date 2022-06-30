@@ -2,7 +2,8 @@
 
 namespace APIPetSitting.Models.Concretes.Users.Updates
 {
-    public class UpdateOwnerInfo : UserUpdateInfo
+    public class UpdatePetSitterInfo : UserUpdateInfo
     {
+        public string PetPreference { get;set; }
     }
 }

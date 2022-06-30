@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DALPetSitting.Abstracts
+namespace DALPetSitting.Abstracts.Read
 {
     /// <summary>
     /// Représente une entité utilisateur
@@ -17,9 +17,9 @@ namespace DALPetSitting.Abstracts
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public DateTime BirthDate { get; set; }       
+        public DateTime BirthDate { get; set; }
         public string Passwd { get; set; }
         public string HashPasswd { get; set; }
-        public byte[] Salt{ get; set; }        
+        public byte[] Salt { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace APIPetSitting.Models.Abstracts
+namespace APIPetSitting.Models.Abstracts.Users.Read
 {
     /// <summary>
     /// Modèle abstrait regroupant les propriétés communes des utilisateurs
@@ -9,7 +9,7 @@ namespace APIPetSitting.Models.Abstracts
     public abstract class User
     {
         public int? ID { get; set; }
-        
+
         public string LastName { get; set; }
         [Required]
         public string FirstName { get; set; }

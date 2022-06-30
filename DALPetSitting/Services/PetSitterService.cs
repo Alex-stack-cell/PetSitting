@@ -1,6 +1,7 @@
 ﻿using DALPetSitting.Abstracts;
 using DALPetSitting.Entities.Dashboards;
 using DALPetSitting.Entities.Users;
+using DALPetSitting.Entities.Users.Updates;
 using DALPetSitting.Helpers;
 using DALPetSitting.Infra;
 using DALPetSitting.Repositories;
@@ -355,6 +356,40 @@ namespace DALPetSitting.Services
                 throw ex;
             }
            
+        }
+
+        public int UpdateInfo(UpdatePetSitterInfo type)
+        {
+            try
+            {
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "UPDATE PetSitter SET LastName = @LastName, FirstName = @FirstName, Email = @Email, PetPreference = @PetPreference WHERE ID = @ID";
+
+                        cmd.AddParameters(
+                            new SqlParameter("@ID", type.Id),
+                            new SqlParameter("@LastName", type.LastName),
+                            new SqlParameter("@FirstName", type.FirstName),
+                            new SqlParameter("@Email", type.Email),
+                            new SqlParameter("@PetPreference",type.PetPreference )
+                        );
+
+                        sqlConnection.Open();
+                        int row = cmd.ExecuteNonQuery();
+
+                        return row;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

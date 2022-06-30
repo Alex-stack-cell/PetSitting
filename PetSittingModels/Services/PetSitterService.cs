@@ -1,5 +1,6 @@
 ﻿using BLLPetSitting.Concretes.Dashboards;
 using BLLPetSitting.Concretes.Users;
+using BLLPetSitting.Concretes.Users.Updates;
 using BLLPetSitting.Mappers;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,11 @@ namespace BLLPetSitting.Services
         public int Update(PetSitter petSitter)
         {
             return _petSitterDalService.Update(petSitter.ToDal());
+        }
+
+        public int UpdateInfo(UpdatePetSitterInfo petSitter)
+        {
+            return _petSitterDalService.UpdateInfo(petSitter.toDal());
         }
     }
 }

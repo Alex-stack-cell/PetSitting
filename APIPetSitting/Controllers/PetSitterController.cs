@@ -2,6 +2,7 @@
 using APIPetSitting.Mappers;
 using APIPetSitting.Models.Concretes.Dashboards;
 using APIPetSitting.Models.Concretes.Users;
+using APIPetSitting.Models.Concretes.Users.Updates;
 using BLLPetSitting.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -90,6 +91,21 @@ namespace APIPetSitting.Controllers
                 return Ok(rowAffected);
             }
             return BadRequest();
+        }
+        [VerifyId]
+        [HttpPut("update/{id}")]
+        public IActionResult Update([FromBody] UpdatePetSitterInfo petSitter)
+        {
+            int rowAffected = _petSitterService.UpdateInfo(petSitter.ToBll());
+            if(rowAffected!=0)
+            {
+                return Ok(petSitter);
+            } 
+            else
+            {
+                return BadRequest();
+            }
+            
         }
 
         // DELETE api/<PetSitterController>/5

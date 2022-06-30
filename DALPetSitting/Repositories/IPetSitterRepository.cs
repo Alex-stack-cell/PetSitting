@@ -1,4 +1,5 @@
 ﻿using DALPetSitting.Entities.Users;
+using DALPetSitting.Entities.Users.Updates;
 using DALPetSitting.Repository;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace DALPetSitting.Repositories
     public interface IPetSitterRepository : IGenericRepository<PetSitter>
     {
         public IEnumerable<PetSitter> GetByPreference(string petPreference);
+        public int UpdateInfo(UpdatePetSitterInfo updatePetSitterInfo);
     }
 }

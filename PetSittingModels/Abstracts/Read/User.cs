@@ -3,7 +3,7 @@ using BLLPetSitting.Interfaces;
 using System;
 using System.Text.RegularExpressions;
 
-namespace BLLPetSitting.Abstracts
+namespace BLLPetSitting.Abstracts.Read
 {
     /// <summary>
     /// Classe abstraite regroupant les caractéristiques communes d'une compte utilisateur
@@ -41,11 +41,11 @@ namespace BLLPetSitting.Abstracts
         /// </summary>
         private int? _score;
 
-        public string LastName { get { return _lastName; }set { this._lastName = value; } }
-        public string FirstName { get { return _firstName; }set { this._firstName = value; } }
-        public string Email { get { return _email; } set { this._email = value; } }
-        public DateTime BirthDate { get { return _birthDate; }set { this._birthDate = value; } }
-        public string Passwd { get { return _passwd; } set { this._passwd = value; } }
+        public string LastName { get { return _lastName; } set { _lastName = value; } }
+        public string FirstName { get { return _firstName; } set { _firstName = value; } }
+        public string Email { get { return _email; } set { _email = value; } }
+        public DateTime BirthDate { get { return _birthDate; } set { _birthDate = value; } }
+        public string Passwd { get { return _passwd; } set { _passwd = value; } }
         //public int? Score { get { return _score; } set{ this._score = value; } }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace BLLPetSitting.Abstracts
         /// <param name="firstName"></param>
         /// <param name="email"></param>
         /// <param name="birthDate"></param>
-        public User(int? id, string lastName, string firstName, string email,DateTime birthDate, string passwd)
+        public User(int? id, string lastName, string firstName, string email, DateTime birthDate, string passwd)
         {
-            this.Id = id;
-            this._lastName = lastName;
-            this._firstName = firstName;
-            this._email = email;
-            this._birthDate = birthDate;
-            this._passwd = passwd;
+            Id = id;
+            _lastName = lastName;
+            _firstName = firstName;
+            _email = email;
+            _birthDate = birthDate;
+            _passwd = passwd;
 
             // validation
             ValidateAge();
@@ -82,7 +82,7 @@ namespace BLLPetSitting.Abstracts
         /// <exception cref="CustomException"></exception>
         public bool ValidateAge()
         {
-            int birthYear = this.BirthDate.Year;
+            int birthYear = BirthDate.Year;
             int currentYear = DateTime.Now.Year;
             bool verifyAge = false;
 
@@ -92,7 +92,7 @@ namespace BLLPetSitting.Abstracts
             }
             else
             {
-                throw new CustomException($"{this.FirstName}, vous devez être majeur pour vous inscrire !");
+                throw new CustomException($"{FirstName}, vous devez être majeur pour vous inscrire !");
             }
             return verifyAge;
         }
@@ -109,11 +109,11 @@ namespace BLLPetSitting.Abstracts
             Regex validateName = new Regex(pattern);
             if (!validateName.IsMatch(firstName))
             {
-                throw new CustomException($"{this.FirstName}, votre prénom ne respecte pas le format attendu");
+                throw new CustomException($"{FirstName}, votre prénom ne respecte pas le format attendu");
             }
             else if (!validateName.IsMatch(lastName))
             {
-                throw new CustomException($"{this.FirstName}, votre nom ne respecte pas le format attendu");
+                throw new CustomException($"{FirstName}, votre nom ne respecte pas le format attendu");
             }
         }
 
@@ -137,27 +137,27 @@ namespace BLLPetSitting.Abstracts
             Regex verifyLength = new Regex(@".{8,15}");
             // le mot de passe doit contenir au moins un symbol
             Regex verifySymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-            
+
             if (!verifyNumber.IsMatch(passwd))
             {
-                throw new CustomException($"Le mot de passe doit contenir un nombre pour { this.FirstName }");
+                throw new CustomException($"Le mot de passe doit contenir un nombre pour {FirstName}");
             }
             else if (!verifyUpperChar.IsMatch(passwd))
             {
-                throw new CustomException($"Le mot de passe doit contenir au moins une majuscule pour { this.FirstName }");
+                throw new CustomException($"Le mot de passe doit contenir au moins une majuscule pour {FirstName}");
             }
             else if (!verifyLowerChar.IsMatch(passwd))
             {
-                throw new CustomException($"Le mot de passe doit contenir au moins une minuscule pour { this.FirstName }");
+                throw new CustomException($"Le mot de passe doit contenir au moins une minuscule pour {FirstName}");
             }
             else if (!verifyLength.IsMatch(passwd))
             {
-                throw new CustomException($"Le mot de passe ne peut pas contenir moins de 8 caractères ou plus de 15 caractères pour { this.FirstName }");
+                throw new CustomException($"Le mot de passe ne peut pas contenir moins de 8 caractères ou plus de 15 caractères pour {FirstName}");
             }
             else if (!verifySymbols.IsMatch(passwd))
             {
-                throw new CustomException($"Le mot de passe doit contenir au moins un caractère spéciale pour { this.FirstName }");
+                throw new CustomException($"Le mot de passe doit contenir au moins un caractère spéciale pour {FirstName}");
             }
-        }     
+        }
     }
 }

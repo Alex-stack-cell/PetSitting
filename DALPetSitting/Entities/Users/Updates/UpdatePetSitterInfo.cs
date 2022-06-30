@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DALPetSitting.Entities.Users.Updates
 {
-    public class UpdateOwnerInfo : UserUpdateInfo
+    public class UpdatePetSitterInfo : UserUpdateInfo
     {
-     
+        public string PetPreference { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using APIPetSitting.Models.Abstracts;
+﻿using APIPetSitting.Models.Abstracts.Users.Read;
 
 namespace APIPetSitting.Models.Concretes.Users
 {
