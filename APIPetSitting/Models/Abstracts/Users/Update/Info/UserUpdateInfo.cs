@@ -1,4 +1,4 @@
-﻿namespace APIPetSitting.Models.Abstracts.Users.Update
+﻿namespace APIPetSitting.Models.Abstracts.Users.Update.Info
 {
     /// <summary>
     /// Propriété mises à jour pour un user

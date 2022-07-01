@@ -1,7 +1,7 @@
 ﻿using UpdatePetSitterInfoApi = APIPetSitting.Models.Concretes.Users.Updates.UpdatePetSitterInfo;
 using UpdatePetSitterInfoBll = BLLPetSitting.Concretes.Users.Updates.UpdatePetSitterInfo;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.Updates.Info
 {
     public static class UpdatePetSitterInfoMapper
     {
@@ -19,14 +19,11 @@ namespace APIPetSitting.Mappers
 
         public static UpdatePetSitterInfoBll ToBll(this UpdatePetSitterInfoApi Api)
         {
-            return new UpdatePetSitterInfoBll()
-            {
-                Id = Api.Id,
-                LastName = Api.LastName,
-                FirstName = Api.FirstName,
-                Email = Api.Email,
-                PetPreference = Api.PetPreference
-            };
+            UpdatePetSitterInfoBll updatePetSitterInfo = new UpdatePetSitterInfoBll(Api.LastName, Api.FirstName, Api.Email);
+
+            updatePetSitterInfo.Id = Api.Id;
+            updatePetSitterInfo.PetPreference = Api.PetPreference;
+            return updatePetSitterInfo;
         }
     }
 }

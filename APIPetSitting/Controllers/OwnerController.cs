@@ -5,11 +5,14 @@ using System.Linq;
 using APIPetSitting.Mappers;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using APIPetSitting.Models.Concretes.Users;
 using APIPetSitting.Models.Concretes.Dashboards;
 using APIPetSitting.Filters;
 using APIPetSitting.Extensions;
 using APIPetSitting.Models.Concretes.Users.Updates;
+using APIPetSitting.Mappers.Users.DashBoard;
+using APIPetSitting.Mappers.Users.UserAccount;
+using APIPetSitting.Mappers.Users.Updates.Info;
+using APIPetSitting.Models.Concretes.Users.UserAccount;
 
 namespace APIPetSitting.Controllers
 {
@@ -79,6 +82,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<OwnerController>/5
+        // A changer => Modifier pour update mdp solo
         [VerifyId]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] Owner owner)

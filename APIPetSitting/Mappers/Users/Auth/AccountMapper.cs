@@ -1,7 +1,7 @@
 ﻿using AccountApi = APIPetSitting.Models.Concretes.Auth.Account;
 using AccountBll = BLLPetSitting.Concretes.Auth.Account;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.Auth
 {
     public static class AccountMapper
     {

@@ -19,14 +19,10 @@ namespace BLLPetSitting.Mappers
 
         public static UpdatePetSitterInfoBll toBll(this UpdatePetSitterInfoDal Entity)
         {
-            return new UpdatePetSitterInfoBll()
-            {
-                Id = Entity.Id,
-                LastName = Entity.LastName,
-                FirstName = Entity.FirstName,
-                Email = Entity.Email,
-                PetPreference = Entity.PetPreference
-            };
+            UpdatePetSitterInfoBll updateSitterInfo = new UpdatePetSitterInfoBll(Entity.LastName, Entity.FirstName, Entity.Email);
+            updateSitterInfo.Id = Entity.Id;
+
+            return updateSitterInfo;
         }
     }
 }

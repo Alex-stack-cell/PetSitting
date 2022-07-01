@@ -1,8 +1,11 @@
 ﻿using APIPetSitting.Filters;
 using APIPetSitting.Mappers;
+using APIPetSitting.Mappers.Users.DashBoard;
+using APIPetSitting.Mappers.Users.Updates.Info;
+using APIPetSitting.Mappers.Users.UserAccount;
 using APIPetSitting.Models.Concretes.Dashboards;
-using APIPetSitting.Models.Concretes.Users;
 using APIPetSitting.Models.Concretes.Users.Updates;
+using APIPetSitting.Models.Concretes.Users.UserAccount;
 using BLLPetSitting.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,6 +84,7 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<PetSitterController>/5
+        // A changer => Modifier pour update mdp solo
         [VerifyId]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] PetSitter petSitter)

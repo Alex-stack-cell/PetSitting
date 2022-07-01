@@ -1,7 +1,7 @@
-﻿using OwnerBLL = BLLPetSitting.Concretes.Users.Owner;
-using OwnerApi = APIPetSitting.Models.Concretes.Users.Owner;
+﻿using OwnerBLL = BLLPetSitting.Concretes.Users.UserAccount.Owner;
+using OwnerApi = APIPetSitting.Models.Concretes.Users.UserAccount.Owner;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.UserAccount
 {
     /// <summary>
     /// Data mapper pour l'API/BLL Owner
@@ -13,7 +13,7 @@ namespace APIPetSitting.Mappers
         /// </summary>
         /// <param name="Bll"></param>
         /// <returns></returns>
-        public static OwnerApi ToApi (this OwnerBLL Bll)
+        public static OwnerApi ToApi(this OwnerBLL Bll)
         {
             return new OwnerApi
             {
@@ -22,7 +22,7 @@ namespace APIPetSitting.Mappers
                 FirstName = Bll.FirstName,
                 Email = Bll.Email,
                 BirthDate = Bll.BirthDate,
-                Passwd = Bll.Passwd,                
+                Passwd = Bll.Passwd,
             };
         }
         /// <summary>
@@ -32,7 +32,7 @@ namespace APIPetSitting.Mappers
         /// <returns></returns>
         public static OwnerBLL ToBll(this OwnerApi Model)
         {
-            OwnerBLL owner =  new OwnerBLL(Model.ID,Model.LastName,Model.FirstName,Model.Email,Model.BirthDate,Model.Passwd);
+            OwnerBLL owner = new OwnerBLL(Model.ID, Model.LastName, Model.FirstName, Model.Email, Model.BirthDate, Model.Passwd);
 
             return owner;
         }

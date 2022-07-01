@@ -1,9 +1,9 @@
-﻿using DashboardAPI = APIPetSitting.Models.Concretes.Dashboards.DashboardPetSitter;
-using DashboardBll = BLLPetSitting.Concretes.Dashboards.DashboardPetSitter;
+﻿using DashboardAPI = APIPetSitting.Models.Concretes.Dashboards.DashboardOwner;
+using DashboardBll = BLLPetSitting.Concretes.Dashboards.DashboardOwner;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.DashBoard
 {
-    public static class DashboardPetSitterMapper
+    public static class DashboardOwnerMapper
     {
         public static DashboardAPI ToApi(this DashboardBll Bll)
         {
@@ -14,8 +14,7 @@ namespace APIPetSitting.Mappers
                 FirstName = Bll.FirstName,
                 BirthDate = Bll.BirthDate,
                 Email = Bll.Email,
-                Score = Bll.Score,
-                PetPreference = Bll.PetPreference,
+                Score = Bll.Score
             };
         }
         public static DashboardBll ToBll(this DashboardAPI Api)
@@ -28,14 +27,7 @@ namespace APIPetSitting.Mappers
                 BirthDate = Api.BirthDate,
                 Email = Api.Email,
                 Score = Api.Score,
-                PetPreference= Api.PetPreference,
             };
         }
     }
 }
-
-
-
-
-
-

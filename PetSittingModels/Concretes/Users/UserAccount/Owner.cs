@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLLPetSitting.Concretes.Users
+namespace BLLPetSitting.Concretes.Users.UserAccount
 {
     /// <summary>
     /// Propriétaire d'animal de compagnie issu de la BLL    

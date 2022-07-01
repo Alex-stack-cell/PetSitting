@@ -1,11 +1,11 @@
-﻿using BLLPetSitting.Concretes.Users;
+﻿using BLLPetSitting.Concretes.Users.UserAccount;
 using DALPetSitting.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PetSitterBll = BLLPetSitting.Concretes.Users.PetSitter;
+using PetSitterBll = BLLPetSitting.Concretes.Users.UserAccount.PetSitter;
 using PetSitterEntity = DALPetSitting.Entities.Users.PetSitter;
 
 namespace BLLPetSitting.Mappers

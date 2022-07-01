@@ -9,5 +9,8 @@ namespace BLLPetSitting.Concretes.Users.Updates
 {
     public class UpdateOwnerInfo : UserUpdateInfo
     {
+        public UpdateOwnerInfo(string lastName, string firstName, string email) : base(lastName, firstName, email)
+        {
+        }
     }
 }

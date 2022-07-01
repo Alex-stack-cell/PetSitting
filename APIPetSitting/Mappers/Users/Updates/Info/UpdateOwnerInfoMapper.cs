@@ -1,7 +1,7 @@
 ﻿using UpdateOwnerInfoApi = APIPetSitting.Models.Concretes.Users.Updates.UpdateOwnerInfo;
 using UpdateOwnerInfoBll = BLLPetSitting.Concretes.Users.Updates.UpdateOwnerInfo;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.Updates.Info
 {
     public static class UpdateOwnerInfoMapper
     {
@@ -11,20 +11,17 @@ namespace APIPetSitting.Mappers
             {
                 Id = Bll.Id,
                 LastName = Bll.LastName,
-                FirstName= Bll.FirstName, 
+                FirstName = Bll.FirstName,
                 Email = Bll.Email
             };
         }
 
         public static UpdateOwnerInfoBll ToBll(this UpdateOwnerInfoApi Api)
         {
-            return new UpdateOwnerInfoBll()
-            {
-                Id = Api.Id,
-                LastName = Api.LastName,
-                FirstName = Api.FirstName,
-                Email = Api.Email
-            };
+            UpdateOwnerInfoBll updateOwnerInfo = new UpdateOwnerInfoBll(Api.LastName, Api.FirstName, Api.Email);
+            updateOwnerInfo.Id = Api.Id;
+
+            return updateOwnerInfo;
         }
     }
 }

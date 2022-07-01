@@ -1,4 +1,4 @@
-﻿using APIPetSitting.Models.Abstracts;
+﻿using APIPetSitting.Models.Abstracts.Users.Dashboard;
 
 namespace APIPetSitting.Models.Concretes.Dashboards
 {

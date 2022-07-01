@@ -1,4 +1,5 @@
 ﻿using APIPetSitting.Mappers;
+using APIPetSitting.Mappers.Users.Auth;
 using APIPetSitting.Models.Concretes.Auth;
 using BLLPetSitting.Services;
 

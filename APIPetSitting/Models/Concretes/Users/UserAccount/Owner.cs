@@ -1,6 +1,6 @@
 ﻿using APIPetSitting.Models.Abstracts.Users.Read;
 
-namespace APIPetSitting.Models.Concretes.Users
+namespace APIPetSitting.Models.Concretes.Users.UserAccount
 {
     /// <summary>
     /// Propriétaire d'un animal de compagnie issus de l'API

@@ -4,9 +4,9 @@ using System.Linq;
 using OwnerDalService = DALPetSitting.Services.OwnerService;
 using BLLPetSitting.Mappers;
 using BLLPetSitting.Abstracts;
-using BLLPetSitting.Concretes.Users;
 using BLLPetSitting.Concretes.Dashboards;
 using BLLPetSitting.Concretes.Users.Updates;
+using BLLPetSitting.Concretes.Users.UserAccount;
 //using UpdateOwner = BLLPetSitting.Concretes.Users.Updates.UpdateOwnerInfo;
 namespace BLLPetSitting.Services
 {

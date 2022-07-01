@@ -1,7 +1,7 @@
-﻿using PetSitterBLL = BLLPetSitting.Concretes.Users.PetSitter;
-using PetSitterApi = APIPetSitting.Models.Concretes.Users.PetSitter;
+﻿using PetSitterBLL = BLLPetSitting.Concretes.Users.UserAccount.PetSitter;
+using PetSitterApi = APIPetSitting.Models.Concretes.Users.UserAccount.PetSitter;
 
-namespace APIPetSitting.Mappers
+namespace APIPetSitting.Mappers.Users.UserAccount
 {
     /// <summary>
     /// Data mapper pour l'API/BLL Owner
@@ -33,9 +33,9 @@ namespace APIPetSitting.Mappers
         /// <returns></returns>
         public static PetSitterBLL ToBll(this PetSitterApi Api)
         {
-            PetSitterBLL petSitter = new PetSitterBLL(Api.ID, Api.LastName, Api.FirstName, Api.Email, Api.BirthDate,Api.Passwd);
+            PetSitterBLL petSitter = new PetSitterBLL(Api.ID, Api.LastName, Api.FirstName, Api.Email, Api.BirthDate, Api.Passwd);
 
-            petSitter.PetPreference = (string)Api.PetPreference;
+            petSitter.PetPreference = Api.PetPreference;
 
             return petSitter;
         }

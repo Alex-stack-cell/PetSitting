@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace APIPetSitting.Models.Abstracts
+namespace APIPetSitting.Models.Abstracts.Users.Dashboard
 {
     public abstract class Dashboard
     {

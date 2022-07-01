@@ -1,4 +1,4 @@
-﻿using APIPetSitting.Models.Abstracts.Users.Update;
+﻿using APIPetSitting.Models.Abstracts.Users.Update.Info;
 
 namespace APIPetSitting.Models.Concretes.Users.Updates
 {

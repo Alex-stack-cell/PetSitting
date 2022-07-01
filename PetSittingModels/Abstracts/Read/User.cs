@@ -1,7 +1,6 @@
-﻿using BLLPetSitting.Exceptions;
-using BLLPetSitting.Interfaces;
+﻿using BLLPetSitting.Interfaces;
 using System;
-using System.Text.RegularExpressions;
+
 
 namespace BLLPetSitting.Abstracts.Read
 {
@@ -10,7 +9,7 @@ namespace BLLPetSitting.Abstracts.Read
     /// ainsi que les méthodes de validation d'inscription
     /// Propriétaire - Prestataire
     /// </summary>
-    public abstract class User : IValidation
+    public abstract class User : IUserValidation
     {
         /// <summary>
         /// Identifiant unique d'une personne
@@ -36,17 +35,12 @@ namespace BLLPetSitting.Abstracts.Read
         /// Mot de passe d'une personne
         /// </summary>
         private string _passwd;
-        /// <summary>
-        /// Score d'un utilisateur
-        /// </summary>
-        private int? _score;
 
         public string LastName { get { return _lastName; } set { _lastName = value; } }
         public string FirstName { get { return _firstName; } set { _firstName = value; } }
         public string Email { get { return _email; } set { _email = value; } }
         public DateTime BirthDate { get { return _birthDate; } set { _birthDate = value; } }
         public string Passwd { get { return _passwd; } set { _passwd = value; } }
-        //public int? Score { get { return _score; } set{ this._score = value; } }
 
         /// <summary>
         /// Constructeur permettant d'initialiser une personne
@@ -65,98 +59,12 @@ namespace BLLPetSitting.Abstracts.Read
             _passwd = passwd;
 
             // validation
-            ValidateAge();
-            ValidateName(firstName, lastName);
+            IUserValidation.ValidateAge(birthDate,firstName);
+            IUserValidation.ValidateName(firstName, lastName);
             // validation du mdp seulement si c'est une opération d'écriture  
             if (!string.IsNullOrWhiteSpace(passwd) && passwd != "")
             {
-                ValidatePassword(passwd);
-            }
-        }
-
-        /// <summary>
-        /// Évalue si une personne est majeure ou non
-        /// Dans le cas contraire une exception est levée.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="CustomException"></exception>
-        public bool ValidateAge()
-        {
-            int birthYear = BirthDate.Year;
-            int currentYear = DateTime.Now.Year;
-            bool verifyAge = false;
-
-            if (currentYear - birthYear >= 18)
-            {
-                verifyAge = true;
-            }
-            else
-            {
-                throw new CustomException($"{FirstName}, vous devez être majeur pour vous inscrire !");
-            }
-            return verifyAge;
-        }
-
-        /// <summary>
-        /// Évalue le prénom et le nom selon un pattern spécifique
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <exception cref="CustomException"></exception>
-        public void ValidateName(string firstName, string lastName)
-        {
-            string pattern = @"[a-zA-Z]+[\s|-]?[a-zA-Z]+[\s|-]?[a-zA-Z]+$";
-            Regex validateName = new Regex(pattern);
-            if (!validateName.IsMatch(firstName))
-            {
-                throw new CustomException($"{FirstName}, votre prénom ne respecte pas le format attendu");
-            }
-            else if (!validateName.IsMatch(lastName))
-            {
-                throw new CustomException($"{FirstName}, votre nom ne respecte pas le format attendu");
-            }
-        }
-
-        /// <summary>
-        /// Évalue le mot de passe selon un pattern spécifique
-        /// Il doit contenir 1 chiffre, 1 majuscule, 1 minuscule, entre 8 et 15 caractères
-        /// et un symbol spéciale
-        /// Si les conditions ne sont pas remplies, une exception est levée
-        /// </summary>
-        /// <param name="passwd"></param>
-        /// <exception cref="CustomException"></exception>
-        public void ValidatePassword(string passwd)
-        {
-            // le mot de passe doit contenir au moins un chiffre
-            Regex verifyNumber = new Regex(@"[0-9]");
-            // le mot de passe doit contenir au moins une lettre en majuscule
-            Regex verifyUpperChar = new Regex(@"[A-Z]+");
-            // le mot de passe doit contenu au moins une lettre minuscule
-            Regex verifyLowerChar = new Regex(@"[a-z]+");
-            // le mot de passe doit être contenir entre 8 et 15 caractères
-            Regex verifyLength = new Regex(@".{8,15}");
-            // le mot de passe doit contenir au moins un symbol
-            Regex verifySymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-
-            if (!verifyNumber.IsMatch(passwd))
-            {
-                throw new CustomException($"Le mot de passe doit contenir un nombre pour {FirstName}");
-            }
-            else if (!verifyUpperChar.IsMatch(passwd))
-            {
-                throw new CustomException($"Le mot de passe doit contenir au moins une majuscule pour {FirstName}");
-            }
-            else if (!verifyLowerChar.IsMatch(passwd))
-            {
-                throw new CustomException($"Le mot de passe doit contenir au moins une minuscule pour {FirstName}");
-            }
-            else if (!verifyLength.IsMatch(passwd))
-            {
-                throw new CustomException($"Le mot de passe ne peut pas contenir moins de 8 caractères ou plus de 15 caractères pour {FirstName}");
-            }
-            else if (!verifySymbols.IsMatch(passwd))
-            {
-                throw new CustomException($"Le mot de passe doit contenir au moins un caractère spéciale pour {FirstName}");
+                IUserValidation.ValidatePassword(firstName, passwd);
             }
         }
     }

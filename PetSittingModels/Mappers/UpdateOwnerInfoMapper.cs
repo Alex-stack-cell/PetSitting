@@ -23,13 +23,10 @@ namespace BLLPetSitting.Mappers
 
         public static UpdateOwnerInfoBll toBll(this UpdateOwnerInfoDal Entity)
         {
-            return new UpdateOwnerInfoBll()
-            {
-                Id = Entity.Id,
-                LastName = Entity.LastName,
-                FirstName = Entity.FirstName,
-                Email = Entity.Email
-            };
+            UpdateOwnerInfoBll updateOwnerInfo =  new UpdateOwnerInfoBll(Entity.LastName, Entity.FirstName, Entity.Email);
+            updateOwnerInfo.Id = Entity.Id;
+
+            return updateOwnerInfo;
         }
     }
 }
