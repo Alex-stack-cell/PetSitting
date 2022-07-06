@@ -62,6 +62,7 @@ namespace APIPetSitting.Controllers
                             FirstName = ownerCredential.FirstName,
                             isOwner = true
                         }, _jwtSettings);
+                        return Ok(new { token = Token.Token });
                     }
                 }
                 else //Sinon check si le compte appartient à un petSitter
@@ -81,20 +82,18 @@ namespace APIPetSitting.Controllers
                                 FirstName = sitterCredential.FirstName,
                                 isOwner = false
                             }, _jwtSettings);
+                            return Ok(new { token = Token.Token });
                         }                       
-                    }
-                    else // A contrario l'utilisateur n'existe pas dans la db
-                    {
-                        return BadRequest("Le mot de passe ou l'email est incorrecte");
-                    }
+                    }  
                 }
-                return Ok(new { token = Token.Token });
+                // A contrario l'utilisateur n'existe pas dans la db
+                return BadRequest("Le mot de passe ou l'email est incorrecte");
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
-        }        
+        }
     }
 }

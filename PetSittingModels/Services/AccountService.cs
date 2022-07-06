@@ -44,6 +44,16 @@ namespace BLLPetSitting.Services
             return _accountService.isOwnerPasswordValid(ownerEmail, passwdToVerify);
         }
 
+        /// <summary>
+        /// Utiliser pour maj le mdp de l'utilisateur, plus besoin de l'email car le user est déjà connecté. Il faut récupéré son Identifiant via le token
+        /// </summary>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
+        public bool isOwnerPasswordValid(string passwdToVerify, int id)
+        {
+            return _accountService.isOwnerPasswordValid(passwdToVerify, id);
+        }
+
         public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify)
         {
             return _accountService.isPetSitterPasswordValid(sitterEmail, passwdToVerify);

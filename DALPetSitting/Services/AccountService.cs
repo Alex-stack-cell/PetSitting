@@ -109,7 +109,7 @@ namespace DALPetSitting.Services
                 string hashedPasswordToVerify;
                 string expectedHashedPassword;
 
-                bool isPasswordValid = false;
+                bool isPasswordValid = true;
 
                 using (SqlConnection sqlConnection = CreateConnection())
                 {
@@ -144,7 +144,7 @@ namespace DALPetSitting.Services
                             // si le mdp fournit en claire une fois haché match avec celui en db => Ok
                             if(expectedHashedPassword == hashedPasswordToVerify)
                             {
-                                isPasswordValid = true;
+                                isPasswordValid = false;
                             }
                             return isPasswordValid;
                         }
@@ -157,6 +157,69 @@ namespace DALPetSitting.Services
                 throw ex;
             }
 
+        }
+        /// <summary>
+        /// Utiliser pour maj du mdp
+        /// </summary>
+        /// <param name="passwdToVerify"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool isOwnerPasswordValid(string passwdToVerify, int id)
+        {
+            try
+            {
+                Account accountToVerify = new Account();
+                byte[] salt;
+                string passwordToVerify;
+                string expectedPassword;
+                bool isPasswordValid = false;
+
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT HashPasswd, Salt FROM Owner WHERE ID = @ID";
+
+                        SqlParameter PId = new SqlParameter();
+
+                        PId.ParameterName = "ID";
+                        PId.IsNullable = false;
+                        PId.Value = id;
+
+                        cmd.AddParameters(PId);
+
+                        sqlConnection.Open();
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                accountToVerify = new Account()
+                                {
+                                    HashPasswd = (string)reader["HashPasswd"],
+                                    Salt = (byte[])reader["Salt"],
+                                };
+                            }
+
+                            salt = accountToVerify.Salt;
+                            expectedPassword = accountToVerify.HashPasswd;
+                            passwordToVerify = Crypto.HashPassword(salt, passwdToVerify);
+
+                            if (expectedPassword == passwordToVerify)
+                            {
+                                isPasswordValid = true;
+                            }
+                            return isPasswordValid;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
         }
         /// <summary>
         /// Authentifie le mdp du petSitter

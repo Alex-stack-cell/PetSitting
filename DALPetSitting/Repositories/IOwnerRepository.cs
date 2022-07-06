@@ -1,6 +1,7 @@
 ﻿using DALPetSitting.Repository;
 using System.Collections.Generic;
 using DALPetSitting.Entities.Users;
+using DALPetSitting.Entities.Users.Updates;
 
 namespace DALPetSitting.Repositories
 {
@@ -9,6 +10,6 @@ namespace DALPetSitting.Repositories
     /// </summary>
     public interface IOwnerRepository : IGenericRepository<Owner>
     {
-        
+        public int UpdatePassword(UpdatePassword type);
     }
 }

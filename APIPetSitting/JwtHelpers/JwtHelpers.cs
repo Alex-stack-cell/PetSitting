@@ -47,7 +47,7 @@ namespace APIPetSitting.JwtHelpers
 
                 // Créer un tableau d'octets de clé secrète fournies dans appsettings.json
                 byte[] key = Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
-                Guid Id = Guid.Empty;
+                //Guid Id = Guid.Empty;
                 DateTime expireTime = DateTime.UtcNow.AddDays(1);
 
                 // Récupération des clés spécifiés dans appsettings.json

@@ -70,9 +70,9 @@ namespace BLLPetSitting.Services
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public int Update(Owner owner)
+        public int UpdatePassword(UpdatePassword updatePassword)
         {
-            return _OwnerDalService.Update(owner.ToDal());
+            return _OwnerDalService.UpdatePassword(updatePassword.ToDal());
         }
 
         public int UpdateInfo(UpdateOwnerInfo owner)

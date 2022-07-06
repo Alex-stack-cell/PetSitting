@@ -269,34 +269,32 @@ namespace DALPetSitting.Services
         /// <param name="type">Un propriétaire issu de la BLL</param>
         /// <returns>Renvoie le nombre de ligne affectée</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public int Update(Owner type)
+        public int UpdatePassword(UpdatePassword type)
         {
             try
             {
+
                 using (SqlConnection sqlConnection = CreateConnection())
                 {
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE Owner SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt WHERE ID = @ID";
+                        cmd.CommandText = "UPDATE Owner SET HashPasswd = @HashPasswd, Salt = @Salt WHERE ID = @ID";
 
                         byte[] salt = Crypto.GenerateSalt();
-                        string clearPassword = type.Passwd;
+                        string clearPassword = type.newPassword;
                         string hashedPassword = Crypto.HashPassword(salt, clearPassword);
 
                         cmd.AddParameters(
                             
-                            new SqlParameter("@ID",type.ID),
-                            new SqlParameter("@LastName",type.LastName),
-                            new SqlParameter("@FirstName",type.FirstName),
-                            new SqlParameter("@BirthDate",type.BirthDate),
-                            new SqlParameter("@Email", type.Email),
+                            new SqlParameter("@ID",type.id),
                             new SqlParameter("@HashPasswd", hashedPassword),
                             new SqlParameter("@Salt", salt)
-                            //new SqlParameter("@Score",type.Score)
                         );
                         
                         sqlConnection.Open();
+
+
                         int row = cmd.ExecuteNonQuery();
 
                         return row;
@@ -340,6 +338,11 @@ namespace DALPetSitting.Services
             {
                 throw ex;
             }
+        }
+
+        public int Update(Owner type)
+        {
+            throw new NotImplementedException();
         }
     }
 }

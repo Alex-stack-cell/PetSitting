@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\Users\Updates\Password\" />
     <Folder Include="Models\Abstracts\Users\Update\Password\" />
   </ItemGroup>
 

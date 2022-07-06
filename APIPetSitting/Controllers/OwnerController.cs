@@ -13,6 +13,8 @@ using APIPetSitting.Mappers.Users.DashBoard;
 using APIPetSitting.Mappers.Users.UserAccount;
 using APIPetSitting.Mappers.Users.Updates.Info;
 using APIPetSitting.Models.Concretes.Users.UserAccount;
+using APIPetSitting.CredentialsHelpers;
+using APIPetSitting.Mappers.Users.Updates.Password;
 
 namespace APIPetSitting.Controllers
 {
@@ -25,11 +27,12 @@ namespace APIPetSitting.Controllers
     public class OwnerController : ControllerBase
     {
         private readonly OwnerService _ownerService;
+        private readonly AccountService _accountService;
 
-
-        public OwnerController(OwnerService ownerService)
+        public OwnerController(OwnerService ownerService, AccountService accountService)
         {
             _ownerService = ownerService;
+            _accountService = accountService;
         }
 
         // GET: api/<OwnerController>
@@ -85,12 +88,17 @@ namespace APIPetSitting.Controllers
         // A changer => Modifier pour update mdp solo
         [VerifyId]
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] Owner owner)
+        public IActionResult Put([FromBody] UpdatePassword updatePassword)
         {
-            if (_ownerService.Update(owner.ToBll())!=0)
+            bool currentPasswdValid = _accountService.isOwnerPasswordValid(updatePassword.currentPassword, updatePassword.id);
+
+            if (currentPasswdValid)
             {
-                int rowAffected = _ownerService.Update(owner.ToBll());
-                return Ok(rowAffected);
+                if (_ownerService.UpdatePassword(updatePassword.toBll()) != 0)
+                {
+                    int rowAffected = _ownerService.UpdatePassword(updatePassword.toBll());
+                    return Ok(rowAffected);
+                }
             }
             return BadRequest();
         }
