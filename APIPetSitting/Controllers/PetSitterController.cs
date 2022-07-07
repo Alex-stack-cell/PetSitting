@@ -74,18 +74,52 @@ namespace APIPetSitting.Controllers
         public IActionResult Post([FromBody] PetSitter petSitter)
         {
             int rowAffected;
+            bool isAlreadyExist = false;
             try
             {
-                rowAffected = _petSitterService.Create(petSitter.ToBll());
+                string existingOwnerEmail = _accountService.GetEmailOwner(petSitter.Email);
+                string existingPetSitterEmail = _accountService.GetEmailPetSitter(petSitter.Email);
+
+                if (existingOwnerEmail == petSitter.Email)
+                {
+                    isAlreadyExist = true;
+
+                }
+                else if (existingPetSitterEmail == petSitter.Email)
+                {
+                    isAlreadyExist = true;
+                }
+
+                if (!isAlreadyExist)
+                {
+                    rowAffected = _petSitterService.Create(petSitter.ToBll());
+                }
+                else
+                {
+                    return BadRequest("Ce compte existe déjà");
+                }
             }
             catch (Exception)
             {
 
                 return new StatusCodeResult(422);
             }
-                        
-            return Ok(rowAffected);
+
+            return (Ok(rowAffected));
         }
+        //int rowAffected;
+        //try
+        //{
+        //    rowAffected = _petSitterService.Create(petSitter.ToBll());
+        //}
+        //catch (Exception)
+        //{
+
+        //    return new StatusCodeResult(422);
+        //}
+
+        //return Ok(rowAffected);
+    
 
         // PUT api/<PetSitterController>/5
         [VerifyId]

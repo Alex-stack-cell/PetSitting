@@ -30,6 +30,8 @@ namespace APIPetSitting.Controllers
         private readonly OwnerService _ownerService;
         private readonly AccountService _accountService;
 
+        public int ActionResultObjectValue { get; private set; }
+
         public OwnerController(OwnerService ownerService, AccountService accountService)
         {
             _ownerService = ownerService;
@@ -72,9 +74,29 @@ namespace APIPetSitting.Controllers
         public IActionResult Post([FromBody] Owner owner)
         {
             int rowAffected;
+            bool isAlreadyExist = false;
             try
             {
-                rowAffected = _ownerService.Create(owner.ToBll());
+                string existingOwnerEmail = _accountService.GetEmailOwner(owner.Email);
+                string existingPetSitterEmail = _accountService.GetEmailPetSitter(owner.Email);
+
+                if (existingOwnerEmail == owner.Email)
+                {
+                    isAlreadyExist = true;
+
+                } else if(existingPetSitterEmail == owner.Email)
+                {
+                    isAlreadyExist = true;
+                }
+
+                if (!isAlreadyExist)
+                {
+                    rowAffected = _ownerService.Create(owner.ToBll());
+                }
+                else
+                {
+                    return BadRequest("Ce compte existe déjà");
+                }
             }
             catch (Exception)
             {
