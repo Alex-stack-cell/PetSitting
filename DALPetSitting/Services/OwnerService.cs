@@ -306,7 +306,11 @@ namespace DALPetSitting.Services
                 throw ex;
             }                    
         }
-
+        /// <summary>
+        /// Met à jour les info d'un owner sur base de son identifiant en bdd
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public int UpdateOwnerInfo(UpdateOwnerInfo type)
         {
             try

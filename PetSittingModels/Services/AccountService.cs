@@ -38,7 +38,12 @@ namespace BLLPetSitting.Services
         {
             return _accountService.GetPetSitterCredentials(credentialToVerify).ToBll();
         }
-
+        /// <summary>
+        /// Utiliser pour évaluer la validité du compte avant connection
+        /// </summary>
+        /// <param name="ownerEmail"></param>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
         public bool isOwnerPasswordValid(string ownerEmail, string passwdToVerify)
         {
             return _accountService.isOwnerPasswordValid(ownerEmail, passwdToVerify);
@@ -53,10 +58,25 @@ namespace BLLPetSitting.Services
         {
             return _accountService.isOwnerPasswordValid(passwdToVerify, id);
         }
-
+        /// <summary>
+        /// Utiliser pour évaluer la validité du compte avant connection
+        /// </summary>
+        /// <param name="sitterEmail"></param>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
         public bool isPetSitterPasswordValid(string sitterEmail, string passwdToVerify)
         {
             return _accountService.isPetSitterPasswordValid(sitterEmail, passwdToVerify);
+        }
+        /// <summary>
+        /// Utiliser pour maj le mdp de l'utilisateur, plus besoin de l'email car le user est déjà connecté. Il faut récupéré son Identifiant via le token
+        /// </summary>
+        /// <param name="sitterEmail"></param>
+        /// <param name="passwdToVerify"></param>
+        /// <returns></returns>
+        public bool isPetSitterPasswordValid(string passwdToVerify, int  id)
+        {
+            return _accountService.isPetSitterPasswordValid(passwdToVerify, id);
         }
     }
 }

@@ -311,13 +311,13 @@ namespace DALPetSitting.Services
             }
         }
         /// <summary>
-        /// Met à jour un pet-sitter dans la base de données 
+        /// Met à jour le mdp d'un pet-sitter dans la base de données 
         /// sur base de son identifiant
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Renvoie le nombre de ligne affectée</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public int Update(PetSitter type)
+        public int UpdatePassword(UpdatePassword type)
         {
             try
             {
@@ -326,22 +326,16 @@ namespace DALPetSitting.Services
                     using (SqlCommand cmd = sqlConnection.CreateCommand())
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE PetSitter SET LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate, Email = @Email, HashPasswd = @HashPasswd, Salt = @Salt, PetPreference = @PetPreference WHERE ID = @ID";
+                        cmd.CommandText = "UPDATE PetSitter SET HashPasswd = @HashPasswd, Salt = @Salt WHERE ID = @ID";
 
                         byte[] salt = Crypto.GenerateSalt();
-                        string clearPassword = type.Passwd;
+                        string clearPassword = type.currentPassword;
                         string hashedPassword = Crypto.HashPassword(salt, clearPassword);
 
                         cmd.AddParameters(     
-                           new SqlParameter("@ID",type.ID),
-                           new SqlParameter("@LastName",type.LastName),
-                           new SqlParameter("@FirstName",type.FirstName),
-                           new SqlParameter("@BirthDate",type.BirthDate),
-                           new SqlParameter("@Email", type.Email),
-                           new SqlParameter("@HashPasswd", hashedPassword),
-                           new SqlParameter("@Salt", salt),
-                           //new SqlParameter("@Score",type.Score),
-                           new SqlParameter("@PetPreference",type.PetPreference)
+                           new SqlParameter("@ID",type.id),
+                           new SqlParameter("@HashPasswd",hashedPassword),
+                           new SqlParameter("@Salt",salt)
                         );
                         sqlConnection.Open();
                         int row = cmd.ExecuteNonQuery();
@@ -357,7 +351,11 @@ namespace DALPetSitting.Services
             }
            
         }
-
+        /// <summary>
+        /// Met à jour les info d'un pet sitter en bdd
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public int UpdateInfo(UpdatePetSitterInfo type)
         {
             try
@@ -390,6 +388,11 @@ namespace DALPetSitting.Services
 
                 throw ex;
             }
+        }
+
+        public int Update(PetSitter type)
+        {
+            throw new NotImplementedException();
         }
     }
 }

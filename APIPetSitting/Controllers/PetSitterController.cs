@@ -1,7 +1,9 @@
-﻿using APIPetSitting.Filters;
+﻿using APIPetSitting.CredentialsHelpers;
+using APIPetSitting.Filters;
 using APIPetSitting.Mappers;
 using APIPetSitting.Mappers.Users.DashBoard;
 using APIPetSitting.Mappers.Users.Updates.Info;
+using APIPetSitting.Mappers.Users.Updates.Password;
 using APIPetSitting.Mappers.Users.UserAccount;
 using APIPetSitting.Models.Concretes.Dashboards;
 using APIPetSitting.Models.Concretes.Users.Updates;
@@ -15,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,10 +30,11 @@ namespace APIPetSitting.Controllers
     public class PetSitterController : ControllerBase
     {
         private readonly PetSitterService _petSitterService;
-        public PetSitterController(PetSitterService petSitterService)
+        private readonly AccountService _accountService;
+        public PetSitterController(PetSitterService petSitterService, AccountService accountService)
         {
             _petSitterService = petSitterService;
-            //_config = config;
+            _accountService = accountService;
         }
 
         // GET: api/<PetSitterController>
@@ -84,15 +88,41 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<PetSitterController>/5
-        // A changer => Modifier pour update mdp solo
         [VerifyId]
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] PetSitter petSitter)
+        public IActionResult Put([FromBody] UpdatePassword updatePassword)
         {
-            if (_petSitterService.Update(petSitter.ToBll()) != 0)
+            bool currentPasswordValid = _accountService.isPetSitterPasswordValid(updatePassword.currentPassword, updatePassword.id);
+
+            if (currentPasswordValid)
             {
-                int rowAffected = _petSitterService.Update(petSitter.ToBll());
-                return Ok(rowAffected);
+                int rowAffected = _petSitterService.UpdatePassword(updatePassword.toBll());
+                if (rowAffected != 0)
+                {
+                
+                    DashboardPetSitter petSitter = _petSitterService.GetDashboard(updatePassword.id).ToApi();
+                    Email email = new Email()
+                    {
+                        FromSenderEmail = "alexandre.petsitting@gmail.com",
+                        FromSenderName = "Gavriilidis",
+                        ToRecipientEmail = petSitter.Email,
+                        ToRecipientName = petSitter.LastName,
+                        Subject = "Mis à jour de votre mot de passe",
+                        PlainText = "Votre mot de passe a bien été modifié. Si vous n'êtes pas à l'origine de cette modification veuillez nous contacter au : +32 555 55 55 55",
+                        HtmlText = "<strong>Votre mot de passe a bien été modifié.</strong> Si vous n'êtes pas à l'origine de cette mopdification veuillez contacter notre service helpdesk au : +32 555 55 55 55"
+                    };
+    
+                    try
+                    {
+                        EmailConfirmation.sendEmail(email);
+                    }
+                    catch (SmtpException ex)
+                    {
+
+                        throw ex;
+                    }
+                    return Ok(rowAffected);
+                }
             }
             return BadRequest();
         }
@@ -103,6 +133,27 @@ namespace APIPetSitting.Controllers
             int rowAffected = _petSitterService.UpdateInfo(petSitter.ToBll());
             if(rowAffected!=0)
             {
+                
+                Email email = new Email()
+                {
+                    FromSenderEmail = "alexandre.petsitting@gmail.com",
+                    FromSenderName = "Gavriilidis",
+                    ToRecipientEmail = petSitter.Email,
+                    ToRecipientName = petSitter.LastName,
+                    Subject = "Mis à jour de vos informations",
+                    PlainText = "Vos données ont été modifié. Si vous n'êtes pas à l'origine de cette modification veuillez nous contacter au : +32 555 55 55 55",
+                    HtmlText = "<strong>Vos données ont été modifié</strong> Si vous n'êtes pas à l'origine de cette modification veuillez contacter notre service helpdesk au : +32 555 55 55 55"
+                };
+                try
+                {
+                    EmailConfirmation.sendEmail(email);
+                }
+                catch (SmtpException ex)
+                {
+
+                    throw ex;
+                }
+
                 return Ok(petSitter);
             } 
             else

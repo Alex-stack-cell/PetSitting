@@ -64,7 +64,7 @@ namespace BLLPetSitting.Abstracts.Read
             // validation du mdp seulement si c'est une opération d'écriture  
             if (!string.IsNullOrWhiteSpace(passwd) && passwd != "")
             {
-                IUserValidation.ValidatePassword(firstName, passwd);
+                IUserValidation.ValidatePassword(passwd, firstName);
             }
         }
     }

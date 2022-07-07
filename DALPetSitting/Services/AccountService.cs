@@ -109,7 +109,7 @@ namespace DALPetSitting.Services
                 string hashedPasswordToVerify;
                 string expectedHashedPassword;
 
-                bool isPasswordValid = true;
+                bool isPasswordValid = false;
 
                 using (SqlConnection sqlConnection = CreateConnection())
                 {
@@ -144,7 +144,7 @@ namespace DALPetSitting.Services
                             // si le mdp fournit en claire une fois haché match avec celui en db => Ok
                             if(expectedHashedPassword == hashedPasswordToVerify)
                             {
-                                isPasswordValid = false;
+                                isPasswordValid = true;
                             }
                             return isPasswordValid;
                         }
@@ -159,7 +159,7 @@ namespace DALPetSitting.Services
 
         }
         /// <summary>
-        /// Utiliser pour maj du mdp
+        /// Vérifie si le mdp fournit par le owner est le bon avant de le mettre à jour
         /// </summary>
         /// <param name="passwdToVerify"></param>
         /// <param name="id"></param>
@@ -281,6 +281,69 @@ namespace DALPetSitting.Services
 
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Vérifie si le mdp fournit par le pet sitter est le bon avant de le mettre à jour
+        /// </summary>
+        /// <param name="passwdToVerify"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool isPetSitterPasswordValid(string passwdToVerify, int id)
+        {
+            try
+            {
+                byte[] salt;
+                string hashedPasswordToVerify;
+                string expectedHashedPassword;
+                bool isPasswordValid = false;
+                Account accountToVerify = new Account();
+
+                using (SqlConnection sqlConnection = CreateConnection())
+                {
+                    using (SqlCommand cmd = sqlConnection.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT HashPasswd, Salt FROM PetSitter WHERE ID = @ID";
+
+                        SqlParameter PId = new SqlParameter();
+                        PId.ParameterName = "ID";
+                        PId.IsNullable = false;
+                        PId.Value = id;
+
+                        cmd.AddParameters(PId);
+
+                        sqlConnection.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                accountToVerify = new Account()
+                                {
+                                    HashPasswd = (string)reader["HashPasswd"],
+                                    Salt = (byte[])reader["Salt"]
+                                };
+                            }
+                            expectedHashedPassword = accountToVerify.HashPasswd;
+                            salt = accountToVerify.Salt;
+                            hashedPasswordToVerify = Crypto.HashPassword(salt, passwdToVerify);
+
+                            if (expectedHashedPassword == hashedPasswordToVerify)
+                            {
+                                isPasswordValid = true;
+                            }
+
+                            return isPasswordValid;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+
+                throw ex;
+            }
+            return true;
         }
         /// <summary>
         /// Récupère les info du proprio. nécessaire pour les claims (Token)

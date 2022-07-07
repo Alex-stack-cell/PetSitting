@@ -15,6 +15,7 @@ using APIPetSitting.Mappers.Users.Updates.Info;
 using APIPetSitting.Models.Concretes.Users.UserAccount;
 using APIPetSitting.CredentialsHelpers;
 using APIPetSitting.Mappers.Users.Updates.Password;
+using System.Net.Mail;
 
 namespace APIPetSitting.Controllers
 {
@@ -85,18 +86,42 @@ namespace APIPetSitting.Controllers
         }
 
         // PUT api/<OwnerController>/5
-        // A changer => Modifier pour update mdp solo
         [VerifyId]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] UpdatePassword updatePassword)
         {
             bool currentPasswdValid = _accountService.isOwnerPasswordValid(updatePassword.currentPassword, updatePassword.id);
 
+            DashboardOwner dashboard = _ownerService.GetDashboard(updatePassword.id).ToApi();
+            
+
             if (currentPasswdValid)
             {
                 if (_ownerService.UpdatePassword(updatePassword.toBll()) != 0)
                 {
                     int rowAffected = _ownerService.UpdatePassword(updatePassword.toBll());
+                  
+                    Email email = new Email()
+                    {
+                        
+                        FromSenderEmail = "alexandre.petsitting@gmail.com",
+                        FromSenderName = "Gavriilidis",
+                        ToRecipientEmail = dashboard.Email,
+                        ToRecipientName = dashboard.LastName,
+                        Subject = "Mis à jour de votre mot de passe",
+                        PlainText = "Votre mot de passe a bien été modifié. Si vous n'êtes pas à l'origine de cette modification veuillez nous contacter au : +32 555 55 55 55",
+                        HtmlText = "<strong>Votre mot de passe a bien été modifié.</strong> Si vous n'êtes pas à l'origine de cette mopdification veuillez contacter notre service helpdesk au : +32 555 55 55 55"
+                    };
+
+                    try
+                    {
+                        EmailConfirmation.sendEmail(email);
+                    }
+                    catch (SmtpException ex) 
+                    {
+                        throw ex;
+                    }
+
                     return Ok(rowAffected);
                 }
             }
@@ -110,6 +135,27 @@ namespace APIPetSitting.Controllers
             if (_ownerService.UpdateInfo(owner.ToBll()) != 0)
             {
                 int rowAffected = _ownerService.UpdateInfo(owner.ToBll());
+
+                Email email = new Email()
+                {
+
+                    FromSenderEmail = "alexandre.petsitting@gmail.com",
+                    FromSenderName = "Gavriilidis",
+                    ToRecipientEmail = owner.Email,
+                    ToRecipientName = owner.LastName,
+                    Subject = "Mis à jour de vos informations",
+                    PlainText = "Vos données ont été modifié. Si vous n'êtes pas à l'origine de cette modification veuillez nous contacter au : +32 555 55 55 55",
+                    HtmlText = "<strong>Vos données ont été modifié</strong> Si vous n'êtes pas à l'origine de cette modification veuillez contacter notre service helpdesk au : +32 555 55 55 55"
+                };
+
+                try
+                {
+                    EmailConfirmation.sendEmail(email);
+                }
+                catch (SmtpException ex)
+                {
+                    throw ex;
+                }
                 return Ok(rowAffected);
             }
             return BadRequest();

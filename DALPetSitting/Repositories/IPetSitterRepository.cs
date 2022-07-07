@@ -16,5 +16,6 @@ namespace DALPetSitting.Repositories
     {
         public IEnumerable<PetSitter> GetByPreference(string petPreference);
         public int UpdateInfo(UpdatePetSitterInfo updatePetSitterInfo);
+        public int UpdatePassword(UpdatePassword updatePassword);
     }
 }

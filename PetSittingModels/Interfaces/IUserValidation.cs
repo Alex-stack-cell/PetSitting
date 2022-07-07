@@ -61,14 +61,14 @@ namespace BLLPetSitting.Interfaces
         public static void ValidatePassword(string passwd, string firstName)
         {
             // le mot de passe doit contenir au moins un chiffre
-            Regex verifyNumber = new Regex(@"[0-9]");
+            Regex verifyNumber = new Regex(@"[0-9]+");
             // le mot de passe doit contenir au moins une lettre en majuscule
             Regex verifyUpperChar = new Regex(@"[A-Z]+");
             // le mot de passe doit contenu au moins une lettre minuscule
             Regex verifyLowerChar = new Regex(@"[a-z]+");
             // le mot de passe doit être contenir entre 8 et 15 caractères
             Regex verifyLength = new Regex(@".{8,15}");
-            // le mot de passe doit contenir au moins un symbol
+            // le mot de passe doit contenir au moins un symbol spécial
             Regex verifySymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
 
             if (!verifyNumber.IsMatch(passwd))

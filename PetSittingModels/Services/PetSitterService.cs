@@ -47,9 +47,9 @@ namespace BLLPetSitting.Services
         {
             return _petSitterDalService.GetDashboard(petSitterId).ToBll();
         }
-        public int Update(PetSitter petSitter)
+        public int UpdatePassword(UpdatePassword updatePassword)
         {
-            return _petSitterDalService.Update(petSitter.ToDal());
+            return _petSitterDalService.UpdatePassword(updatePassword.ToDal());
         }
 
         public int UpdateInfo(UpdatePetSitterInfo petSitter)
