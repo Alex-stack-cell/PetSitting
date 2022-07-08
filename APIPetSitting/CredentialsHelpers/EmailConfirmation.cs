@@ -17,7 +17,7 @@ namespace APIPetSitting.CredentialsHelpers
         {
             //via SendGrid
             //string apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");// soit via variable d'environnement, soit en dur dans le code comme-ci dessous
-            string apiKey = "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";
+            string apiKey = "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";
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress(email.FromSenderEmail,email.FromSenderName);
             var subject = email.Subject; 

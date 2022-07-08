@@ -26,6 +26,7 @@ using System;
 using APIPetSitting.Models.Concretes.Auth;
 using APIPetSitting.Requirements;
 
+
 namespace APIPetSitting
 {
     public class Startup
@@ -66,7 +67,8 @@ namespace APIPetSitting
 
             services.AddSingleton(typeof(ConnectionString), (s) =>
             {
-                return new ConnectionString(Configuration.GetConnectionString("Dev"));
+                string sqlConnectionString = @$"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PetSitting;User ID={Properties.Resource.DbUser};Password={Properties.Resource.DbPasswd};";
+                return new ConnectionString(sqlConnectionString/*Configuration.GetConnectionString(sqlConnectionString)*/);
             });
 
             services.AddSingleton(bindJwtSettings);

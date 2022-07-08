@@ -10,6 +10,12 @@
 *.userosscache
 *.sln.docstates
 
+#Ignore Secret for EmailApi
+**/EmailConfirmation.cs
+
+#Ignore Resource file containing sensitive data
+**/Resource.resx/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
